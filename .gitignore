@@ -1,4 +1,5 @@
 data/
+!data/samples_sheet.csv
 Zhu*
 *.gz
 *.tar
