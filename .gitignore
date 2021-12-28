@@ -1,6 +1,6 @@
-results/
 data/
 Zhu*
 *.gz
 *.tar
 *.zip
+.Rproj.user
