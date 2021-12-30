@@ -1,5 +1,5 @@
 # Dont track binaries except INSTALLATION_LOG.txt
-!bin/INSTALLATION_LOG.txt
+bin/INSTALLATION_LOG.txt
 bin/**/
 bin/*.gz
 bin/*.tar
