@@ -1,9 +1,6 @@
 # TODO: 
 # add executables to $PATH
 
-LIPID_HOME=$(pwd)
-BINARY_HOME=${LIPID_HOME}/bin
-
 # Purpose: install binaries/source packages needed for LipidModule project into clean Ubuntu 20.04 LTS (e.g. AWS ec2 instance).
 # After successful installation of packages, a file called 'INSTALL_LOG' will appear in the /bin folder with info on the last time the environment setup was run.
 

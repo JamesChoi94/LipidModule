@@ -12,6 +12,10 @@ This analysis should be run on a UNIX-based machine.
     ```
     source ENV.sh
     ```   
+1. Install binaries/source packages.
+    ```
+    scripts/setup_environment.sh
+    ```
 1. Query NCBI.
     ```
     R scripts/query_gsm2sra.r
