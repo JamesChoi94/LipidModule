@@ -14,7 +14,7 @@ This analysis should be run on a UNIX-based machine.
     ```   
 1. Install binaries/source packages.
     ```
-    scripts/setup_environment.sh
+    sudo bash scripts/setup_environment.sh
     ```
 1. Query NCBI.
     ```

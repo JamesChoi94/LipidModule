@@ -173,7 +173,14 @@ cd ${LIPID_HOME}
 ${LIPID_HOME}/bin/samtools-1.14/samtools --version
 
 ##########################################################################################
-  
+
+### Entrez Direct tools installation
+# Description: Entrez Direct (EDirect) provides access to the NCBI's suite of interconnected databases (publication, sequence, structure, gene, variation, expression, etc.) from a Unix terminal window
+sh -c "$(wget -q ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh -P ${LIPID_HOME}/bin/)"
+mv ${HOME}/edirect ${LIPID_HOME}/bin/
+
+##########################################################################################
+
 printf "R successfully installed: ${R_VERSION}\n\n"
 printf "JRE successfully installed at: ${JAVA_PATH}\n"
 printf "FastQC successfully installed: ${FASTQC_VERSION}\n"
@@ -182,5 +189,16 @@ printf "STAR successfully installed: ${STAR_VERSION}\n"
 printf "HISAT2 successfully installed: ${HISAT2_VERSION}\n"
 printf "kallisto successfully installed: ${KALLISTO_VERSION}\n"
 
-echo "Last run: $(date) Status: successful\n" >> ${LIPID_HOME}/bin/INSTALL_LOG.txt
+printf "To export executables to PATH, please source ENV.sh\n"
+
+# export PATH=${PATH}:\
+# ${LIPID_HOME}/bin/sratoolkit.2.11.3-ubuntu64/bin:\
+# ${LIPID_HOME}/bin/edirect/:${LIPID_HOME}/bin:\
+# ${LIPID_HOME}/bin/STAR-2.7.9a/bin/Linux_x86_64:\
+# ${LIPID_HOME}/bin/samtools-1.14:\
+# ${LIPID_HOME}/bin/FastQC:\
+# ${LIPID_HOME}/bin/hisat2-2.2.1:\
+# ${LIPID_HOME}/bin/kallisto
+
+printf "Last run: $(date) Status: successful\n" >> ${LIPID_HOME}/bin/INSTALL_LOG.txt
 exit
