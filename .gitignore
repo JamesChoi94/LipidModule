@@ -1,13 +1,27 @@
+# Dont track large, compressed data files
 data/*.gz
 data/*.tar
 data/*.zip
 data/*.tsv
 data/*.txt
+
+# Dont track data files with subdirectories
 data/**/
+
+# Allow tracking of samples_sheet
 !data/samples_sheet.csv
+
+# Dont track Zhu replication analysis
+misc/*
 Zhu*
-*.gz
-*.tar
-*.zip
+
+# 
+# !config/*.gz 
+# !config/*.tar 
+# !config/*.zip
+
+# .html files are usually Rmarkdown outputs. Dont track.
 *.html
+
+# Local machine temporary R session files.
 .Rproj.user
