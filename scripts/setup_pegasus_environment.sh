@@ -20,6 +20,9 @@ then
   printf "${LAST_RUN_LOG}\n"
 fi
 
+# Need java for FastQC. Can load java module available in pegasus.
+module load java
+
 ##########################################################################################
 
 ### R installation ###
