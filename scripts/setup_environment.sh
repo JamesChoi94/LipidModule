@@ -1,8 +1,11 @@
-# TODO: 
-# add executables to $PATH
 
 # Purpose: install binaries/source packages needed for LipidModule project into clean Ubuntu 20.04 LTS (e.g. AWS ec2 instance).
 # After successful installation of packages, a file called 'INSTALL_LOG' will appear in the /bin folder with info on the last time the environment setup was run.
+
+export LIPID_HOME=$(pwd)
+echo $LIPID_HOME
+export SRA_NCBI_CONFIG=${LIPID_HOME}/config/sratoolkit-vdb-config_ec2-setup.tar.gz
+echo $SRA_NCBI_CONFIG
 
 # Check to make sure this environment script wasn't already run.
 LOG_CHECK=$(find bin/ -name 'INSTALL_LOG.txt')
@@ -15,7 +18,6 @@ LAST_RUN_STATUS=$(${LAST_RUN_LOG} | awk '{print $NF}')
 if [ "successful" = "${LAST_RUN_STATUS}" ]
 then
   printf "${LAST_RUN_LOG}\n"
-  exit
 fi
 
 ##########################################################################################
@@ -34,20 +36,19 @@ then
     if [ "" = "${PKG_OK}" ]
     then
       printf "No ${PKG}. Setting up ${PKG}.\n"
-      sudo apt-get -yes install ${PKG}
+      sudo apt-get -y install ${PKG}
     fi
   done
   # Add the CRAN repository to your system sources' list:
   sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
   sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
-  sudo apt-get -yes install r-base
+  sudo apt-get -y install r-base
 fi
 R_VERSION=$(R --version | grep "version" | head -n 1)
 if [ "" = "${R_VERSION}" ]
 then
   printf "R installation unsuccessful. Please install R manually. Exiting ec2 environment setup.\n"
   printf "Last run: $(date) Status: unsuccessful\n" >> ${LIPID_HOME}/bin/INSTALL_LOG.txt
-  exit
 else
   printf "R successfully installed: ${R_VERSION}\n\n"
 fi
@@ -67,7 +68,6 @@ if [ "" = "${JAVA_PATH}" ]
 then
   printf "Java Runtime Environment (JRE) unsuccessful. Please install JRE manually. Exiting ec2 environment setup.\n"
   printf "Last run: $(date) Status: unsuccessful\n" >> ${LIPID_HOME}/bin/INSTALL_LOG.txt
-  exit
 else
   printf "JRE successfully installed at: ${JAVA_PATH}\n\n"
 fi
@@ -81,7 +81,6 @@ if [ "" = "${FASTQC_VERSION}" ]
 then
   printf "FastQC installation unsuccessful. Please install FastQC manually. Exiting ec2 environment setup.\n"
   printf "Last run: $(date) Status: unsuccessful\n" >> ${LIPID_HOME}/bin/INSTALL_LOG.txt
-  exit
 else
   printf "FastQC successfully installed: ${FASTQC_VERSION}\n\n"
 fi
@@ -104,7 +103,6 @@ if [ "" = "${FASTQDUMP_VERSION}" ] || [ "" = "${VDB_CONFIG_VERSION}" ]
 then
   printf "SRA toolkit installation unsuccessful. Please install manually. Exiting ec2 environment setup.\n"
   printf "Last run: $(date) Status: unsuccessful\n" >> ${LIPID_HOME}/bin/INSTALL_LOG.txt
-  exit
 else
   printf "SRA toolkit successfully installed:\nfastq-dump version: ${FASTQDUMP_VERSION}\nvdb-config version: ${VDB_CONFIG_VERSION}\n\n"
 fi
@@ -120,7 +118,6 @@ if [ "" = "${STAR_VERSION}" ]
 then
   printf "STAR installation unsuccessful. Please install manually. Exiting ec2 environment setup.\n"
   printf "Last run: $(date) Status: unsuccessful\n" >> ${LIPID_HOME}/bin/INSTALL_LOG.txt
-  exit
 else
   printf "STAR successfully installed: ${STAR_VERSION}\n\n"
 fi
@@ -136,7 +133,6 @@ if [ "" = "${HISAT2_VERSION}" ]
 then
   printf "HISAT2 installation unsuccessful. Please install manually. Exiting ec2 environment setup.\n"
   printf "Last run: $(date) Status: unsuccessful\n" >> ${LIPID_HOME}/bin/INSTALL_LOG.txt
-  exit
 else
   printf "HISAT2 successfully installed: ${HISAT2_VERSION}\n\n"
 fi
@@ -153,7 +149,6 @@ if [ "" = "${KALLISTO_VERSION}" ]
 then
   printf "kallisto installation unsuccessful. Please install manually. Exiting ec2 environment setup.\n"
   printf "Last run: $(date) Status: unsuccessful\n" >> ${LIPID_HOME}/bin/INSTALL_LOG.txt
-  exit
 else
   printf "kallisto successfully installed: ${KALLISTO_VERSION}\n\n"
 fi
@@ -201,4 +196,3 @@ printf "To export executables to PATH, please source ENV.sh\n"
 # ${LIPID_HOME}/bin/kallisto
 
 printf "Last run: $(date) Status: successful\n" >> ${LIPID_HOME}/bin/INSTALL_LOG.txt
-exit

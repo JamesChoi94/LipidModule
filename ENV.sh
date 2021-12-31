@@ -17,7 +17,7 @@ then
   # echo ${LAST_RUN_STATUS}
   if [ "successful" = "${LAST_RUN_STATUS}" ]
   then
-    printf "Previous source/binaries installation successful. Exporting executables to PATH"
+    printf "Previous source/binaries installation successful. Exporting executables to PATH\n"
     export PATH=${PATH}:\
 ${LIPID_HOME}/bin/sratoolkit.2.11.3-ubuntu64/bin:\
 ${LIPID_HOME}/bin/edirect/:${LIPID_HOME}/bin:\
