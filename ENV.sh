@@ -20,7 +20,7 @@ then
     printf "Previous source/binaries installation successful. Exporting executables to PATH\n"
     export PATH=${PATH}:\
 ${LIPID_HOME}/bin/sratoolkit.2.11.3-ubuntu64/bin:\
-${LIPID_HOME}/bin/edirect/:${LIPID_HOME}/bin:\
+${LIPID_HOME}/bin/edirect/:\
 ${LIPID_HOME}/bin/STAR-2.7.9a/bin/Linux_x86_64:\
 ${LIPID_HOME}/bin/samtools-1.14:\
 ${LIPID_HOME}/bin/FastQC:\
