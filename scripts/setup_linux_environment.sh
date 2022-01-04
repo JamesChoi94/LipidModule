@@ -46,25 +46,15 @@ do
 done
 
 # Set working directory to LipidModule home
-cd ${pwd}
-
-echo Checking if LipidModule environment is already installed...
-sleep 2s # Slows down script to make terminal output more readable
-if [ -d ${HOME}/miniconda/envs/LipidModule ]
-# True if environment exists exists and is directory
-then
-  echo The LipidModule environment already exists, exiting script.
-  exit 0
-fi
+LIPID_HOME=$(pwd)
+cd $LIPID_HOME
+echo $LIPID_HOME
 
 echo Checking if conda is executable from PATH...
-if [ "" != "$(which conda)" ]
+if [ "" == "$(which conda)" ]
 then
-  echo conda found at: $(which conda)
-  conda info -a
-else
   echo conda not found. Downloading Miniconda3 installation script...
-  sleep 2s # Slows down script to make terminal output more readable
+  sleep 1s # Slows down script to make terminal output more readable
   if [ "$(uname -m)" == "x86_64" ]
   # If the Linux system is 64-bit...
   then
@@ -78,16 +68,14 @@ else
       -O {HOME}/miniconda.sh
   fi
 
-  echo Installing Miniconda3...
-  sleep 2s # Slows down script to make terminal output more readable
-  bash miniconda.sh -b -p ${HOME}/miniconda
+  echo Installing Miniconda3...; sleep 1s
+  bash miniconda.sh -b -p ${HOME}/miniconda3
 
   echo Miniconda3 installed, removing installation script...
   rm -f {HOME}/miniconda.sh
 
-  echo Setting up Miniconda3...
-  sleep 2s # Slows down script to make terminal output more readable
-  source "${HOME}/miniconda/etc/profile.d/conda.sh"
+  echo Setting up Miniconda3...; sleep 1s
+  source "${HOME}/miniconda3/etc/profile.d/conda.sh"
   hash -r
   conda config \
     --set always_yes yes \
@@ -96,32 +84,73 @@ else
   conda update -q conda
   conda init
 
-  echo Displaying information about current conda installation...
-  sleep 2s # Slows down script to make terminal output more readable
+  echo Displaying information about current conda installation...; sleep 1s
+  conda info -a
+else
+  echo conda found at: $(which conda)
   conda info -a
 fi
 
-echo Creating the LipidModule virtual environment using conda...
-sleep 2s # Slows down script to make terminal output more readable
-# If the Linux system is 64-bit...
-if [ "$(uname -m)" == "x86_64" ];
+echo Checking if LipidModule virtual environment is already installed...
+sleep 1s
+if [ -d ${HOME}/miniconda3/envs/LipidModule ]
+# True if environment exists exists and is directory...
 then
-	# Create the virtual environment using the explicit spec list
-	conda create --name LipidModule \
-		--file ~/LipidModule/envs/LipidModule.txt
-# If the Linux system is not 64-bit...
+  REINSTALL_ENV=0
+  echo The LipidModule virtual environment already exists.; sleep 1s
+  echo Checking if installed packages are current...; sleep 1s
+  if [ "$(uname -m)" == "x86_64" ]
+  then
+    conda list --explicit > ${LIPID_HOME}/tmp_env.txt
+    ENV_DIFF=$(diff ${LIPID_HOME}/tmp_env.txt \
+      ${LIPID_HOME}/env/LipidModule.txt | wc -l)
+    rm ${LIPID_HOME}/tmp_env.txt
+    if [ ${ENV_DIFF} -ge 1 ]
+    # True if environment specifications not identical
+    then
+      REINSTALL_ENV=1
+    else
+      echo LipidModule virtual environment is up to date. Exiting script.
+      exit 0
+    fi
+  else 
+    conda env export --name LipidModule > ${LIPID_HOME}/tmp_env.yml
+    ENV_DIFF=$(diff ${LIPID_HOME}/tmp_env.yml \
+      ${LIPID_HOME}/env/LipidModule.yml | wc -l)
+    rm ${LIPID_HOME}/tmp_env.yml
+    if [ ${ENV_DIFF} -ge 1 ]
+    then
+      REINSTALL_ENV=1
+    else
+      echo LipidModule virtual environment is up to date. Exiting script.
+      exit 0
+    fi
+  fi
+# If environment does not exist...
 else
-	# Create the virtual environment using an "environment".yml file
-	conda env create -f ~/LipidModule/envs/LipidModule.yml
+  REINSTALL_ENV=1
+  echo LipidModule virtual environment does not exist.; sleep 1s
+fi
+
+echo Creating the LipidModule virtual environment using conda...; sleep 1s
+if [ REINSTALL_ENV == 1 ]
+then
+  if [ "$(uname -m)" == "x86_64" ]
+  then
+	  conda create --name LipidModule \
+      --file ${LIPID_HOME}/envs/LipidModule.txt
+  else
+	  conda env create -f ${LIPID_HOME}/envs/LipidModule.yml
+  fi
 fi
 
 echo Removing unused packages and caches using conda...
-sleep 2s # Slows down script to make terminal output more readable
+sleep 1s # Slows down script to make terminal output more readable
 conda clean --all --yes
 
-echo -e Script finished! \n
+echo -e Script finished!
 
-echo -e Please restart your Linux system for these changes to take effect. \n
+echo -e Please restart your Linux system for these changes to take effect.
 
 echo The LipidModule environment can be activated using the command...
 echo -e	"\t \$ conda activate LipidModule"
