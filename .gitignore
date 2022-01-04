@@ -2,6 +2,8 @@
 bin/INSTALL_LOG.txt
 bin/**/
 bin/*.gz
+bin/*.bz
+bin/*.bz2
 bin/*.tar
 bin/*.zip
 
