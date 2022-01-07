@@ -10,18 +10,13 @@
 #BSUB -N
 #BSUB -u jsc228@miami.edu
 
-cd /scratch/projects/lemmon/jsc228/
 export HOME=/scratch/projects/lemmon/jsc228
-git clone https://github.com/JamesChoi94/LipidModule.git
-cd LipidModule
-chmod 755 scripts/*.sh
-source ENV.sh
+export LIPID_HOME=/scratch/projects/lemmon/jsc228/LipidModule
+cd ${LIPID_HOME}
 echo HOME: ${HOME}
 echo LIPID_HOME: ${LIPID_HOME}
-bash scripts/setup_linux_environment.sh
 conda env create --file env/LipidModule.yml
 conda activate LipidModule
-
 scripts/fastq-dump-wrapper.sh \
   -s results/gsm2sra_query/gsm2sra_query_compiled.tsv \
   -t %n
