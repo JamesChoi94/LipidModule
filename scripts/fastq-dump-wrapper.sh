@@ -115,19 +115,19 @@ echo -e "Script started: $(date)\n"
 # Create output directories if cannot be found
 if [[ ! -d ${FASTQDUMP_OUT} ]]
 then
-	mkdir ${FASTQDUMP_OUT}
+	mkdir -p  ${FASTQDUMP_OUT}
 fi
 if [[ ! -d ${FASTQC_OUT} ]]
 then
-	mkdir ${FASTQC_OUT}
+	mkdir -p ${FASTQC_OUT}
 fi
 if [[ ! -d ${BBDUK_READS_OUT} ]]
 then
-	mkdir ${BBDUK_READS_OUT}
+	mkdir -p  ${BBDUK_READS_OUT}
 fi
 if [[ ! -d ${BBDUK_STATS_OUT} ]]
 then
-	mkdir ${BBDUK_STATS_OUT}
+	mkdir -p  ${BBDUK_STATS_OUT}
 fi
 
 # the work
