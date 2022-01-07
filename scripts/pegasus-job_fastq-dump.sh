@@ -16,8 +16,12 @@ cd ${LIPID_HOME}
 echo HOME: ${HOME}
 echo LIPID_HOME: ${LIPID_HOME}
 source ${HOME}/.bashrc
-conda env create --file env/LipidModule.yml
+if [[ ! -d ${HOME}/miniconda3/envs/LipidModule ]]
+then
+  conda env create --file env/LipidModule.yml
+fi
 conda activate LipidModule
+chmod 755 scripts/*.sh
 scripts/fastq-dump-wrapper.sh \
   -s results/gsm2sra_query/gsm2sra_query_compiled.tsv \
   -t %n
