@@ -1,21 +1,22 @@
-# Dont track binaries except INSTALLATION_LOG.txt
-bin/INSTALL_LOG.txt
-bin/**/
-bin/*.gz
-bin/*.bz
-bin/*.bz2
-bin/*.tar
-bin/*.zip
+# Dont track downloaded sra-tools tarballs
+env/**/
+env/sratoolkit.*.tar.gz
 
-# Dont track large, compressed data files
+# Dont track large, compressed data files or fastq files
 data/*.gz
 data/*.tar
 data/*.zip
 data/*.tsv
 data/*.txt
+*.fastq
+*.sra
 
 # Dont track data files with subdirectories
 data/**/
+
+# Dont track FastQC outputs
+*fastqc.zip
+*fastqc.html
 
 # Allow tracking of samples_sheet
 !data/samples_sheet.csv

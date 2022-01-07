@@ -148,6 +148,20 @@ echo Removing unused packages and caches using conda...
 sleep 1s # Slows down script to make terminal output more readable
 conda clean --all --yes
 
+echo sra-tools v.2.11.3 is not available through bioconda. Installing directly from NCBI...
+if [ ! -f 'env/sratoolkit.2.11.3-ubuntu64.tar.gz' ]
+then
+  wget -P ${LIPID_HOME}/env/ https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.11.3/sratoolkit.2.11.3-ubuntu64.tar.gz
+fi
+tar -vxzf ${LIPID_HOME}/env/sratoolkit.2.11.3-ubuntu64.tar.gz -C ${LIPID_HOME}/env/
+
+echo Extracting sra-tools configuration file...
+# Import SRA tools config, which can be prepared on a separate machine beforehand 
+# e.g. on my local machine:
+# tar -czvf sratoolkit-vdb-config_ec2-setup.tar.gz .ncbi/
+tar -xvzf ${LIPID_HOME}/env/sra-tools-2.11.3-vdb-config.tar.gz -C ${HOME}
+export PATH=${PATH}:${LIPID_HOME}/env/sratoolkit.2.11.3-ubuntu64/bin/
+
 echo -e Script finished!
 
 echo -e Please restart your Linux system for these changes to take effect.
