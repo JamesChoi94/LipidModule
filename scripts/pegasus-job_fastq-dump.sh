@@ -15,6 +15,7 @@ export LIPID_HOME=/scratch/projects/lemmon/jsc228/LipidModule
 cd ${LIPID_HOME}
 echo HOME: ${HOME}
 echo LIPID_HOME: ${LIPID_HOME}
+source ${HOME}/.bashrc
 conda env create --file env/LipidModule.yml
 conda activate LipidModule
 scripts/fastq-dump-wrapper.sh \
