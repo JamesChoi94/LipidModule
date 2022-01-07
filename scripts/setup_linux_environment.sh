@@ -55,7 +55,7 @@ if [ "" == "$(which conda)" ]
 then
   echo conda not found. Downloading Miniconda3 installation script...
   sleep 1s # Slows down script to make terminal output more readable
-  if [ "$(uname -m)" == "x86_64" ]
+  if [[ "$(uname -m)" == "x86_64" || "$HOSTTYPE" == "X86_64" ]]
   # If the Linux system is 64-bit...
   then
     # Download the script to install the 64-bit version of miniconda
