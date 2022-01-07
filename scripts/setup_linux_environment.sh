@@ -60,12 +60,12 @@ then
   then
     # Download the script to install the 64-bit version of miniconda
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
-      -O {HOME}/miniconda.sh
+      -O ${HOME}/miniconda.sh
   # If the Linux system is not 64-bit...
   else
     # Download the script to install the 32-bit version of miniconda
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86.sh \
-      -O {HOME}/miniconda.sh
+      -O ${HOME}/miniconda.sh
   fi
 
   echo Installing Miniconda3...; sleep 1s
