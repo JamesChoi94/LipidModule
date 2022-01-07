@@ -11,7 +11,7 @@
 #BSUB -u jsc228@miami.edu
 
 cd /scratch/projects/lemmon/jsc228/
-export HOME=/scratch/projects/lemmon/jsc228/
+export HOME=/scratch/projects/lemmon/jsc228
 git clone https://github.com/JamesChoi94/LipidModule.git
 cd LipidModule
 chmod 755 scripts/*.sh

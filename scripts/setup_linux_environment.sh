@@ -69,7 +69,7 @@ then
   fi
 
   echo Installing Miniconda3...; sleep 1s
-  bash miniconda.sh -b -p ${HOME}/miniconda3
+  bash ${HOME}/miniconda.sh -b -p ${HOME}/miniconda3
 
   echo Miniconda3 installed, removing installation script...
   rm -f {HOME}/miniconda.sh
