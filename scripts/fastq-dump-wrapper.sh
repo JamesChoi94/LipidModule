@@ -185,13 +185,13 @@ do
 		bbduk.sh \
 			in=${FASTQDUMP_OUT}/${SRR}_1.fastq \
 			in2=${FASTQDUMP_OUT}/${SRR}_2.fastq \
-			out=${BBDUK_OUT}/${SRR}_1_trimmed.fastq \
-			out2=${BBDUK_OUT}/${SRR}_2_trimmed.fastq \
+			out=${BBDUK_READS_OUT}/${SRR}_1_trimmed.fastq \
+			out2=${BBDUK_READS_OUT}/${SRR}_2_trimmed.fastq \
 			stats=${BBDUK_STATS_OUT}/${SRR}_BBduk-stats.txt \
 			threads=${THREADS} ref=adapters k=21 hdist=1 ktrim=r mink=10
 	else
 		bbduk.sh in=${FASTQDUMP_OUT}/${SRR}.fastq \
-			out=${BBDUK_OUT}/${SRR}_trimmed.fastq \
+			out=${BBDUK_READS_OUT}/${SRR}_trimmed.fastq \
 			stats=${BBDUK_STATS_OUT}/${SRR}_BBduk-stats.txt \
 			threads=${THREADS} ref=adapters k=21 hdist=1 ktrim=r mink=10
 	fi
