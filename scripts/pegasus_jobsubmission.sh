@@ -18,7 +18,7 @@ chmod 755 scripts/*.sh
 source ENV.sh
 echo HOME: ${HOME}
 echo LIPID_HOME: ${LIPID_HOME}
-scripts/setup_linux_environment.sh
+bash scripts/setup_linux_environment.sh
 conda env create --file env/LipidModule.yml
 conda activate LipidModule
 
