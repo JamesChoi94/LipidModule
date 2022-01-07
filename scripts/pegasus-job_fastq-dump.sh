@@ -24,4 +24,4 @@ conda activate LipidModule
 chmod 755 scripts/*.sh
 scripts/fastq-dump-wrapper.sh \
   -s results/gsm2sra_query/gsm2sra_query_compiled.tsv \
-  -t %n
+  -t 12
