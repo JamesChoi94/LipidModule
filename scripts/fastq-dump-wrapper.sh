@@ -29,9 +29,10 @@ export PATH=${PATH}:${LIPID_HOME}/env/sratoolkit.2.11.3-ubuntu64/bin/
 # For fasterq-dump, this might be redundant since sra-tools already allows 
 # specifying location of user-respository.
 FASTQDUMP_OUT="${LIPID_HOME}/data/rawdata"
-FASTQC_OUT="${LIPID_HOME}/results/fastqc/rawdata"
+FASTQC_RAW_OUT="${LIPID_HOME}/results/fastqc/rawdata"
 BBDUK_READS_OUT="${LIPID_HOME}/data/trimmed_reads"
 BBDUK_STATS_OUT="${LIPID_HOME}/results/bbduk"
+FASTQC_TRIMMED_OUT="${LIPID_HOME}/results/fastqc/trimmed_reads"
 
 # Setting VERBOSE to 0
 # This will be changed to "1" if --verbose is given as an argument,
@@ -117,9 +118,9 @@ if [[ ! -d ${FASTQDUMP_OUT} ]]
 then
 	mkdir -p  ${FASTQDUMP_OUT}
 fi
-if [[ ! -d ${FASTQC_OUT} ]]
+if [[ ! -d ${FASTQC_RAW_OUT} ]]
 then
-	mkdir -p ${FASTQC_OUT}
+	mkdir -p ${FASTQC_RAW_OUT}
 fi
 if [[ ! -d ${BBDUK_READS_OUT} ]]
 then
@@ -128,6 +129,10 @@ fi
 if [[ ! -d ${BBDUK_STATS_OUT} ]]
 then
 	mkdir -p  ${BBDUK_STATS_OUT}
+fi
+if [[ ! -d ${FASTQC_TRIMMED_OUT} ]]
+then
+	mkdir -p ${FASTQC_TRIMMED_OUT}
 fi
 
 # the work
@@ -158,12 +163,17 @@ do
 	sleep 3s
 done
 
-# Run FastQC on raw data
-echo -e "Running FastQC on raw fastq data..."
-FASTQC_DONE=($(ls ${FASTQC_OUT} | cut -d '_' -f 1 | uniq))
-FASTQC_DO=($(echo ${SRR_ACCESSION[@]} ${FASTQC_DONE[@]} | tr ' ' '\n' | sort | uniq -u | sort -r))
-fastqc -o ${FASTQC_OUT} -t ${THREADS} ${FASTQDUMP_OUT}/${FASTQC_DO[@]}*.fastq
-echo -e "Done running FastQC."
+# Run FastQC on raw reads
+echo -e "Running FastQC on raw reads..."
+FASTQC_DONE=($(ls ${FASTQC_RAW_OUT} | cut -d '_' -f 1-2 | uniq))
+ALL_FASTQ=($(echo $(ls ${FASTQDUMP_OUT}/*.fastq | rev | cut -d '/' -f 1 | rev |\
+	cut -d '.' -f 1)))
+FASTQC_DO=($(echo ${ALL_FASTQ[@]} ${FASTQC_DONE[@]} | tr ' ' '\n' | sort | \
+	uniq -u | sort -r))
+FASTQC_DO=( "${FASTQC_DO[@]/#/${FASTQDUMP_OUT}/}" )
+FASTQC_DO=( "${FASTQC_DO[@]/%/.fastq}" )
+fastqc -o ${FASTQC_RAW_OUT} -t ${THREADS} ${FASTQC_DO[@]}
+echo -e "Done running FastQC on raw reads."
 
 # Perform adapter trimming
 for SRR in ${SRR_ACCESSION[@]}
@@ -186,6 +196,19 @@ do
 			threads=${THREADS} ref=adapters k=21 hdist=1 ktrim=r mink=10
 	fi
 done
+
+# Run FastQC on trimmed reads
+echo -e "Running FastQC on trimmed reads..."
+FASTQC_DONE=($(ls ${FASTQC_TRIMMED_OUT} | cut -d '_' -f 1-2 | uniq))
+ALL_FASTQ=($(echo $(ls ${FASTQDUMP_OUT}/*.fastq | rev | cut -d '/' -f 1 | rev |\
+	cut -d '.' -f 1)))
+FASTQC_DO=($(echo ${ALL_FASTQ[@]} ${FASTQC_DONE[@]} | tr ' ' '\n' | sort | \
+	uniq -u | sort -r))
+FASTQC_DO=( "${FASTQC_DO[@]/#/${FASTQDUMP_OUT}/}" )
+FASTQC_DO=( "${FASTQC_DO[@]/%/.fastq}" )
+fastqc -o ${FASTQC_TRIMMED_OUT} -t ${THREADS} ${FASTQC_DO[@]}
+echo -e "Done running FastQC on trimmed reads."
+
 
 echo Script finished: $(date)
 
