@@ -60,22 +60,22 @@ then
   then
     # Download the script to install the 64-bit version of miniconda
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
-      -O ${HOME}/miniconda.sh
+      -O ${LIPID_HOME}/miniconda.sh
   # If the Linux system is not 64-bit...
   else
     # Download the script to install the 32-bit version of miniconda
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86.sh \
-      -O ${HOME}/miniconda.sh
+      -O ${LIPID_HOME}/miniconda.sh
   fi
 
   echo Installing Miniconda3...; sleep 1s
-  bash miniconda.sh -b -p ${HOME}/miniconda3
+  bash miniconda.sh -b -p ${LIPID_HOME}/miniconda3
 
   echo Miniconda3 installed, removing installation script...
-  rm -f {HOME}/miniconda.sh
+  rm -f {LIPID_HOME}/miniconda.sh
 
   echo Setting up Miniconda3...; sleep 1s
-  source "${HOME}/miniconda3/etc/profile.d/conda.sh"
+  source "${LIPID_HOME}/miniconda3/etc/profile.d/conda.sh"
   hash -r
   conda config \
     --set always_yes yes \
@@ -93,7 +93,7 @@ fi
 
 echo Checking if LipidModule virtual environment is already installed...
 sleep 1s
-if [ -d ${HOME}/miniconda3/envs/LipidModule ]
+if [ -d ${LIPID_HOME}/miniconda3/envs/LipidModule ]
 # True if environment exists exists and is directory...
 then
   REINSTALL_ENV=0
@@ -159,7 +159,7 @@ echo Extracting sra-tools configuration file...
 # Import SRA tools config, which can be prepared on a separate machine beforehand 
 # e.g. on my local machine:
 # tar -czvf sratoolkit-vdb-config_ec2-setup.tar.gz .ncbi/
-tar -xvzf ${LIPID_HOME}/env/sra-tools-2.11.3-vdb-config.tar.gz -C ${HOME}
+tar -xvzf ${LIPID_HOME}/env/sra-tools-2.11.3-vdb-config.tar.gz -C ${LIPID_HOME}
 export PATH=${PATH}:${LIPID_HOME}/env/sratoolkit.2.11.3-ubuntu64/bin/
 
 echo -e Script finished!
