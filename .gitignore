@@ -2,6 +2,17 @@
 env/**/
 env/sratoolkit.*.tar.gz
 
+# Dont track fasta/annotation files
+*.ht2
+*.ht21
+*.fa
+*.fasta
+*.fastq
+*.fa.gz
+ref/HISAT2_index/**
+ref/annotations/**
+ref/**.tar
+
 # Dont track large, compressed data files or fastq files
 data/*.gz
 data/*.tar

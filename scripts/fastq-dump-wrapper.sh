@@ -13,7 +13,7 @@ then query_gsm2sra.R must first be run. \n
 \n
 Optional arguments: \n
 \t      SRR ID(s)\t\t           Sequence Read Archive Run ID(s) (SRR...). \n
-\t 			-s | -samplesheet\t			Whether to automatically import SRR IDs from \n
+\t 			-s | --samplesheet\t			Whether to automatically import SRR IDs from \n
 \t 			\t\t\t									a sample query sheet, e.g: \n
 \t 			\t\t\t									gsm2sra_query_compiled.tsv \n
 \t 			\t\t\t									This will override any SRR IDs provided. \n
@@ -188,12 +188,12 @@ do
 			out=${BBDUK_READS_OUT}/${SRR}_1_trimmed.fastq \
 			out2=${BBDUK_READS_OUT}/${SRR}_2_trimmed.fastq \
 			stats=${BBDUK_STATS_OUT}/${SRR}_BBduk-stats.txt \
-			threads=${THREADS} ref=adapters k=21 hdist=1 ktrim=r mink=10
+			threads=${THREADS} ref=adapters k=21 hdist=1 ktrim=r mink=10 #defaults
 	else
 		bbduk.sh in=${FASTQDUMP_OUT}/${SRR}.fastq \
 			out=${BBDUK_READS_OUT}/${SRR}_trimmed.fastq \
 			stats=${BBDUK_STATS_OUT}/${SRR}_BBduk-stats.txt \
-			threads=${THREADS} ref=adapters k=21 hdist=1 ktrim=r mink=10
+			threads=${THREADS} ref=adapters k=21 hdist=1 ktrim=r mink=10 #defaults
 	fi
 done
 
