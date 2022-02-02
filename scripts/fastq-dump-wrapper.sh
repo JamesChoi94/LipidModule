@@ -1,5 +1,4 @@
 #!/bin/bash
-# https://github.com/rnnh/bioinfo-notebook.git
 
 # Help/usage text
 usage="$(basename "$0") [options] -O|--outdir <path> -t|--threads <count> \n
@@ -135,7 +134,6 @@ then
 	mkdir -p ${FASTQC_TRIMMED_OUT}
 fi
 
-# the work
 for SRR in ${SRR_ACCESSION[@]}
 do
 	echo -e "Prefetching sra file for ${SRR}"
@@ -163,35 +161,48 @@ do
 	sleep 3s
 done
 
+# compress all to fastq.gz
+parallel gzip ::: ${FASTQDUMP_OUT}/*.fastq
+# gzip ${FASTQDUMP_OUT}/*.fastq
+
 # Run FastQC on raw reads
 echo -e "Running FastQC on raw reads..."
+# Check to see on which fastq files FastQC has already been run.
+# Separates file names in FASTQC_RAW_OUT by '_'. Files that have already been run have
+# corresponding SRR_1_fastqc files. 
 FASTQC_DONE=($(ls ${FASTQC_RAW_OUT} | cut -d '_' -f 1-2 | uniq))
-ALL_FASTQ=($(echo $(ls ${FASTQDUMP_OUT}/*.fastq | rev | cut -d '/' -f 1 | rev |\
+# Get full list of available fastq files in FASTQDUMP_OUT (e.g. SRR789191_1)
+ALL_FASTQ=($(echo $(ls ${FASTQDUMP_OUT}/*.fastq.gz | rev | cut -d '/' -f 1 | rev |\
 	cut -d '.' -f 1)))
+# Compare the two above arrays and output elements in ALL_FASTQ that are not in FASTQC_DONE.
+# echo all elements, tr ' ' '\n' will replace all spaces with new line (i.e. SRRs are now
+# single line), sort, get only unique elements (those present in only one of the arrays).
 FASTQC_DO=($(echo ${ALL_FASTQ[@]} ${FASTQC_DONE[@]} | tr ' ' '\n' | sort | \
 	uniq -u | sort -r))
+# Prepend FASTQC_DO array with FASTQDUMP_OUT
 FASTQC_DO=( "${FASTQC_DO[@]/#/${FASTQDUMP_OUT}/}" )
-FASTQC_DO=( "${FASTQC_DO[@]/%/.fastq}" )
+# Append .fastq.gz to FASTQC_DO
+FASTQC_DO=( "${FASTQC_DO[@]/%/.fastq.gz}" )
 fastqc -o ${FASTQC_RAW_OUT} -t ${THREADS} ${FASTQC_DO[@]}
 echo -e "Done running FastQC on raw reads."
 
 # Perform adapter trimming
 for SRR in ${SRR_ACCESSION[@]}
 do
-	READS=($(ls ${FASTQDUMP_OUT}/${SRR}*.fastq))
+	READS=($(ls ${FASTQDUMP_OUT}/${SRR}*.fastq.gz))
 	echo ${READS[@]}
 	if [[ "${#READS[@]}" -ge 2 ]]
 	then
 		bbduk.sh \
-			in=${FASTQDUMP_OUT}/${SRR}_1.fastq \
-			in2=${FASTQDUMP_OUT}/${SRR}_2.fastq \
-			out=${BBDUK_READS_OUT}/${SRR}_1_trimmed.fastq \
-			out2=${BBDUK_READS_OUT}/${SRR}_2_trimmed.fastq \
+			in=${FASTQDUMP_OUT}/${SRR}_1.fastq.gz \
+			in2=${FASTQDUMP_OUT}/${SRR}_2.fastq.gz \
+			out=${BBDUK_READS_OUT}/${SRR}_1_trimmed.fastq.gz \
+			out2=${BBDUK_READS_OUT}/${SRR}_2_trimmed.fastq.gz \
 			stats=${BBDUK_STATS_OUT}/${SRR}_BBduk-stats.txt \
 			threads=${THREADS} ref=adapters k=21 hdist=1 ktrim=r mink=10 #defaults
 	else
-		bbduk.sh in=${FASTQDUMP_OUT}/${SRR}.fastq \
-			out=${BBDUK_READS_OUT}/${SRR}_trimmed.fastq \
+		bbduk.sh in=${FASTQDUMP_OUT}/${SRR}.fastq.gz \
+			out=${BBDUK_READS_OUT}/${SRR}_trimmed.fastq.gz \
 			stats=${BBDUK_STATS_OUT}/${SRR}_BBduk-stats.txt \
 			threads=${THREADS} ref=adapters k=21 hdist=1 ktrim=r mink=10 #defaults
 	fi
@@ -200,12 +211,12 @@ done
 # Run FastQC on trimmed reads
 echo -e "Running FastQC on trimmed reads..."
 FASTQC_DONE=($(ls ${FASTQC_TRIMMED_OUT} | cut -d '_' -f 1-2 | uniq))
-ALL_FASTQ=($(echo $(ls ${FASTQDUMP_OUT}/*.fastq | rev | cut -d '/' -f 1 | rev |\
+ALL_FASTQ=($(echo $(ls ${FASTQDUMP_OUT}/*.fastq.gz | rev | cut -d '/' -f 1 | rev |\
 	cut -d '.' -f 1)))
 FASTQC_DO=($(echo ${ALL_FASTQ[@]} ${FASTQC_DONE[@]} | tr ' ' '\n' | sort | \
 	uniq -u | sort -r))
 FASTQC_DO=( "${FASTQC_DO[@]/#/${FASTQDUMP_OUT}/}" )
-FASTQC_DO=( "${FASTQC_DO[@]/%/.fastq}" )
+FASTQC_DO=( "${FASTQC_DO[@]/%/.fastq.gz}" )
 fastqc -o ${FASTQC_TRIMMED_OUT} -t ${THREADS} ${FASTQC_DO[@]}
 echo -e "Done running FastQC on trimmed reads."
 

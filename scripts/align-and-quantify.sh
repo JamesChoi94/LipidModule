@@ -29,9 +29,9 @@ Optional arguments: \n
 \t			\t\t\t									assumes paired reads. \n
 \t			-k | --keep-bam\t				Keep intermediate BAM files. If set, they \n
 \t			\t\t\t									are saved to data/aligned_bams. \n
-\t			-h | --help\t						Show this help text and exit \n
-\t			-t | --threads\t				How many threads to use (dflt=2) \n
-\t			--verbose\t							Make output of script more verbose \n
+\t			-h | --help\t\t					Show this help text and exit \n
+\t			-t | --threads\t\t			How many threads to use (dflt=2) \n
+\t			--verbose\t\t						Make output of script more verbose \n
 "
 
 # TO DO:
@@ -73,7 +73,7 @@ do
 	case "$1" in
 		-h|--help)
 			echo -e $usage
-			exit
+			# exit
 			;;
 		-t|--threads)
 			THREADS=$2
