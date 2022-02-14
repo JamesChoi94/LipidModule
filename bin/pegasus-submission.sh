@@ -14,3 +14,7 @@ export NETHOME=/nethome/jsc228/LipidModule
 export LIPID_HOME=/scratch/projects/lemmon/jsc228/LipidModule
 cd /nethome/jsc228/LipidModule
 source setup_environment.sh
+
+nextflow run rnaseq-processing.nf \
+  -profile conda,lsf \
+  -resume

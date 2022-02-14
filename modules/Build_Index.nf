@@ -7,23 +7,14 @@ process Build_Index {
   path("${params.aligner}_index"), emit: index
 
   script:
+  alignerDir = path("${params.genomeDir}/${params.aligner}_index")
+  mkdirResult = alignerDir.mkdirs()
   if(params.aligner == "STAR")
   """
    STAR --runMode genomeGenerate \
-    --genomeDir ${params.genomeDir} \
+    --genomeDir ${params.genomeDir}/${params.aligner}_index \
     --genomeFastaFiles ${params.genomeFasta} \
     --sjdbGTFfile  ${params.annotationGTF} \
     --runThreadN ${task.cpus}
   """
 }
-  // """
-  // STAR --runMode genomeGenerate \
-  //   --genomeDir ${params.genomeDir} \
-  //   --genomeFastaFiles ${params.testGenomeFasta} \
-  //   --sjdbGTFfile  ${params.annotationGTF} \
-  //   --runThreadN ${task.cpus}
-  // """
-  // if(params.aligner == "hisat2")
-  // """
-  // echo hello
-  // """

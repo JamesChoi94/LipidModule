@@ -69,25 +69,24 @@ workflow {
   .take(1)
 
   // Uncomment DumpFASTQ for runs ------
-  // Dump_FASTQ(srrAccession)
-  // fastq_reads = Dump_FASTQ.out.fastq_reads
+  Dump_FASTQ(srrAccession)
+  fastq_reads = Dump_FASTQ.out.fastq_reads
   
-  // Use this chunk for test runs ------
-  test_reads = Channel
-    .fromFilePairs(params.testReads)
-  test_reads
-    .view{r -> "key: ${r[0]} read1: ${r[1][0]} read2: ${r[1][1]}"}
-  // ------------------------------------
+  // // Use this chunk for test runs ------
+  // test_reads = Channel
+  //   .fromFilePairs(params.testReads)
+  // test_reads
+  //   .view{r -> "key: ${r[0]} read1: ${r[1][0]} read2: ${r[1][1]}"}
+  // // ------------------------------------
 
-  Raw_FastQC(test_reads)
-  Trim_Adapters(test_reads)
+  Raw_FastQC(fastq_reads)
+  Trim_Adapters(fastq_reads)
   // trimmed_reads = Trim_Adapters.out.trimmed_reads
   Trimmed_FastQC(Trim_Adapters.out.trimmed_reads)
 
-
   // Build_Index()
-  
+
   // test_reads.get(1).view()
-  println "${params.genomeDir}/${params.aligner}_index"
-  Align_Reads(test_reads)
+  // println "${params.genomeDir}/${params.aligner}_index"
+  // Align_Reads(fastq_reads)
 }
