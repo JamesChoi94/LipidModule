@@ -16,11 +16,9 @@ cd ${NETHOME}
 source setup_environment.sh
 cd ${NETHOME}
 cd ..
-if [[ ! -d ${SCRATCH}/LipidModule ]]
-then
-  scp -r LipidModule ${LIPID_HOME}
-fi
-cd ${SCRATCH}/LipidModule
+rsync -r ${NETHOME} ${SCRATCH}/LipidModule
+# cd ${SCRATCH}/LipidModule
+cd ${NETHOME}
 
 module load java/1.8.0_60
 
