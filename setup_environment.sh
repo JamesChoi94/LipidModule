@@ -2,13 +2,13 @@
 
 # These should be modified for every new study --------------------------------
 
-# NETHOME and LIPID_HOME should point to the `nethome` and  `scratch` file 
+# NETHOME and SCRATCH should point to the `nethome` and  `scratch` file 
 # systems on Pegasus. This will allow larger files (e.g. fastq's) to be saved
 # in the `scratch` file system and other, smaller analysis ouputs (e.g. read 
 # mappings) to be saved in `nethome` for "permanent" storage. It should be 
 # assumed that anything in `scratch` can be deleted after any run.
 
-# If NETHOME and LIPID_HOME point to same directory, the large data files (e.g.
+# If NETHOME and SCRATCH point to same directory, the large data files (e.g.
 # fastq.gz and genome index/FASTAs) will be saved in the same project 
 # directory. This should only really be done for testing purposes. Do NOT 
 # point both to the `nethome` file system - your account may be suspended for
@@ -16,9 +16,9 @@
 
 
 # export NETHOME=/nethome/jsc228/LipidModule
-# export LIPID_HOME=/scratch/projects/lemmon/jsc228/LipidModule
+# export SCRATCH=/scratch/projects/lemmon/jsc228/LipidModule
 # export NETHOME=/mnt/d/LipidModule
-# export LIPID_HOME=/mnt/d/LipidModule
+# export SCRATCH=/mnt/d/LipidModule
 
 if [ ! -d ${NETHOME} ]
 then
@@ -29,7 +29,7 @@ fi
 echo "NETHOME:"
 echo ${NETHOME}
 echo "SCRATCH:"
-echo ${LIPID_HOME}
+echo ${SCRATCH}
 
 cd ${NETHOME}
 

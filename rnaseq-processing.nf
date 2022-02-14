@@ -35,7 +35,6 @@ println "readsDir:              $params.readsDir"
 println "queryGEODir:           $params.queryGEODir"
 println "publishmode:           $params.publishmode"
 println "sleep:                 $params.sleep"
-println "genome:                $params.genome"
 println "resultsDir:            $params.resultsDir"
 println "samplesheet:           $params.samplesheet"
 println "dataDir:               $params.dataDir"
@@ -44,14 +43,14 @@ println ""
 
 workflow {
 
-  def readFiles = params.readsDir + "/" + "*_{1,2}.fastq"
-  println "$readFiles"
+  // def readFiles = params.readsDir + "/" + "*_{1,2}.fastq"
+  // println "$readFiles"
 
-  readPairs     = Channel.fromFilePairs(readFiles, checkIfExists:true)
+  // readPairs     = Channel.fromFilePairs(readFiles, checkIfExists:true)
   alignerMethod = Channel.of('hisat2', 'STAR')
   trimmerMethod = Channel.of('bbduk.sh', 'cutadapt')
   samplesheet   = Channel.fromPath(params.samplesheet)
-  reads         = Channel.fromPath(params.readsDir + "/*_{1,2}.fastq")
+  // reads         = Channel.fromPath(params.readsDir + "/*_{1,2}.fastq")
   
   /* Query GEO db for GSM to SRR mappings */
   Query_GEO(samplesheet)

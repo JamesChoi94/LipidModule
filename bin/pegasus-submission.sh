@@ -11,13 +11,18 @@
 #BSUB -u jsc228@miami.edu
 
 export NETHOME=/nethome/jsc228/LipidModule
-export LIPID_HOME=/scratch/projects/lemmon/jsc228
+export SCRATCH=/scratch/projects/lemmon/jsc228
 cd ${NETHOME}
 source setup_environment.sh
 cd ${NETHOME}
 cd ..
-scp -r LipidModule ${LIPID_HOME}
-cd ${LIPID_HOME}/LipidModule
+if [[ ! -d ${SCRATCH}/LipidModule ]]
+then
+  scp -r LipidModule ${LIPID_HOME}
+fi
+cd ${SCRATCH}/LipidModule
+
+module load java/1.8.0_60
 
 nextflow run rnaseq-processing.nf \
   -profile conda,lsf \
