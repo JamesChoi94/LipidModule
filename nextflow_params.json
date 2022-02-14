@@ -1,0 +1,10 @@
+{
+  "rawReadsDir": "data/rawdata",
+  "queryGEODir": "results/QueryGEO",
+  "publishmode": "copy",
+  "sleep": 1,
+  "genome": "ref/HISAT2_index/GRCm39.primary_assembly.genome.fa",
+  "resultsDir": "results",
+  "samplesheet": "data/samplesheet_appended.csv",
+  "dataDir": "data"
+}

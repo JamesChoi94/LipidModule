@@ -1,0 +1,34 @@
+﻿GSM_Accession,StudyTitle,SampleDescription
+GSM1103369,RNA-Seq characterization of spinal cord injury transcriptome in acute/subacute phases: a resource for understanding the pathology at the systems level,CTR rep1
+GSM1103370,RNA-Seq characterization of spinal cord injury transcriptome in acute/subacute phases: a resource for understanding the pathology at the systems level,CTR rep2
+GSM1103372,RNA-Seq characterization of spinal cord injury transcriptome in acute/subacute phases: a resource for understanding the pathology at the systems level,2D rep1
+GSM1103373,RNA-Seq characterization of spinal cord injury transcriptome in acute/subacute phases: a resource for understanding the pathology at the systems level,2D rep2
+GSM1103374,RNA-Seq characterization of spinal cord injury transcriptome in acute/subacute phases: a resource for understanding the pathology at the systems level,2D rep3
+GSM1103375,RNA-Seq characterization of spinal cord injury transcriptome in acute/subacute phases: a resource for understanding the pathology at the systems level,7D rep1
+GSM1103377,RNA-Seq characterization of spinal cord injury transcriptome in acute/subacute phases: a resource for understanding the pathology at the systems level,7D rep3
+GSM1174307,RNA-Seq characterization of spinal cord injury transcriptome in acute/subacute phases: a resource for understanding the pathology at the systems level,7D rep2
+GSM2249448,Macrophage transcriptional profile identifies lipid catabolic pathways that can be therapeutically targeted after spinal cord injury,3d.1
+GSM2249449,Macrophage transcriptional profile identifies lipid catabolic pathways that can be therapeutically targeted after spinal cord injury,3d.2
+GSM2249450,Macrophage transcriptional profile identifies lipid catabolic pathways that can be therapeutically targeted after spinal cord injury,3d.3
+GSM2249451,Macrophage transcriptional profile identifies lipid catabolic pathways that can be therapeutically targeted after spinal cord injury,7d.1
+GSM2249452,Macrophage transcriptional profile identifies lipid catabolic pathways that can be therapeutically targeted after spinal cord injury,7d.2
+GSM2249453,Macrophage transcriptional profile identifies lipid catabolic pathways that can be therapeutically targeted after spinal cord injury,7d.3
+GSM4317499,Treml4 promotes inflammatory programs in human and murine macrophages and alters atherosclerosis lesion composition in the Apolipoprotein E deficient mouse,Apoe-/- macrophages untreated rep 1
+GSM4317500,Treml4 promotes inflammatory programs in human and murine macrophages and alters atherosclerosis lesion composition in the Apolipoprotein E deficient mouse,Apoe-/- macrophages untreated rep 2
+GSM4317501,Treml4 promotes inflammatory programs in human and murine macrophages and alters atherosclerosis lesion composition in the Apolipoprotein E deficient mouse,Apoe-/- macrophages untreated rep 3
+GSM4317505,Treml4 promotes inflammatory programs in human and murine macrophages and alters atherosclerosis lesion composition in the Apolipoprotein E deficient mouse,Apoe-/- macrophages oxLDL treated 10ug rep 1
+GSM4317506,Treml4 promotes inflammatory programs in human and murine macrophages and alters atherosclerosis lesion composition in the Apolipoprotein E deficient mouse,Apoe-/- macrophages oxLDL treated 10ug rep 2
+GSM4317507,Treml4 promotes inflammatory programs in human and murine macrophages and alters atherosclerosis lesion composition in the Apolipoprotein E deficient mouse,Apoe-/- macrophages oxLDL treated 10ug rep 3
+GSM4317511,Treml4 promotes inflammatory programs in human and murine macrophages and alters atherosclerosis lesion composition in the Apolipoprotein E deficient mouse,Apoe-/- macrophages oxLDL treated 60ug rep 1
+GSM4317512,Treml4 promotes inflammatory programs in human and murine macrophages and alters atherosclerosis lesion composition in the Apolipoprotein E deficient mouse,Apoe-/- macrophages oxLDL treated 60ug rep 2
+GSM4317513,Treml4 promotes inflammatory programs in human and murine macrophages and alters atherosclerosis lesion composition in the Apolipoprotein E deficient mouse,Apoe-/- macrophages oxLDL treated 60ug rep 3
+GSM4317517,Treml4 promotes inflammatory programs in human and murine macrophages and alters atherosclerosis lesion composition in the Apolipoprotein E deficient mouse,wt biological rep 1 control
+GSM4317519,Treml4 promotes inflammatory programs in human and murine macrophages and alters atherosclerosis lesion composition in the Apolipoprotein E deficient mouse,wt biological rep 1 LPS 12 hr
+GSM4317520,Treml4 promotes inflammatory programs in human and murine macrophages and alters atherosclerosis lesion composition in the Apolipoprotein E deficient mouse,wt biological rep 2 control
+GSM4317522,Treml4 promotes inflammatory programs in human and murine macrophages and alters atherosclerosis lesion composition in the Apolipoprotein E deficient mouse,wt biological rep 2 LPS 12hr
+GSM4320173,Triacylglycerol synthesis enhances macrophage inflammatory function,Resting_M0_1
+GSM4320174,Triacylglycerol synthesis enhances macrophage inflammatory function,Resting_M0_2
+GSM4320175,Triacylglycerol synthesis enhances macrophage inflammatory function,Resting_M0_3
+GSM4320176,Triacylglycerol synthesis enhances macrophage inflammatory function,Stimulated_M1_18h_1
+GSM4320177,Triacylglycerol synthesis enhances macrophage inflammatory function,Stimulated_M1_18h_2
+GSM4320178,Triacylglycerol synthesis enhances macrophage inflammatory function,Stimulated_M1_18h_3

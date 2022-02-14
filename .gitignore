@@ -1,6 +1,9 @@
+# Dont track results
+results/**
+
 # Dont track downloaded sra-tools tarballs
-env/**/
-env/sratoolkit.*.tar.gz
+bin/sratoolkit.*.tar.gz
+bin/sratoolkit**
 
 # Dont track fasta/annotation files
 *.ht2
@@ -9,9 +12,21 @@ env/sratoolkit.*.tar.gz
 *.fasta
 *.fastq
 *.fa.gz
+*.fa
+*.gtf
 ref/HISAT2_index/**
+ref/STAR_index/**
 ref/annotations/**
 ref/**.tar
+
+# IDK
+ref/Log.out
+
+# Dont track nextflow run files
+*.nextflow.log*
+*.command.*
+.nextflow/*
+work/*
 
 # Dont track large, compressed data files or fastq files
 data/*.gz
