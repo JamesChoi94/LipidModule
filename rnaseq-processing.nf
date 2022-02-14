@@ -75,6 +75,8 @@ workflow {
   // Use this chunk for test runs ------
   test_reads = Channel
     .fromFilePairs(params.testReads)
+  test_reads
+    .view{r -> "key: ${r[0]} read1: ${r[1][0]} read2: ${r[1][1]}"}
   // ------------------------------------
 
   Raw_FastQC(test_reads)
@@ -84,5 +86,8 @@ workflow {
 
 
   // Build_Index()
-  Align_Reads()
+  
+  // test_reads.get(1).view()
+  println "${params.genomeDir}/${params.aligner}_index"
+  Align_Reads(test_reads)
 }

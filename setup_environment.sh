@@ -15,10 +15,10 @@
 # inappropriate resource usage.
 
 
-# export NETHOME=/nethome/jsc228/LipidModule
-# export LIPID_HOME=/scratch/projects/lemmon/jsc228/LipidModule
-export NETHOME=/mnt/d/LipidModule
-export LIPID_HOME=/mnt/d/LipidModule
+export NETHOME=/nethome/jsc228/LipidModule
+export LIPID_HOME=/scratch/projects/lemmon/jsc228/LipidModule
+# export NETHOME=/mnt/d/LipidModule
+# export LIPID_HOME=/mnt/d/LipidModule
 
 
 if [ ! -d ${NETHOME} ]
@@ -31,6 +31,8 @@ echo "NETHOME:"
 echo ${NETHOME}
 echo "SCRATCH:"
 echo ${LIPID_HOME}
+
+cd {LIPID_HOME}
 
 bash bin/setup_linux_environment.sh
 
