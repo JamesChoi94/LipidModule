@@ -1,15 +1,16 @@
 #!/bin/bash
-#BSUB -J 
+#BSUB -J LipidModule-setup
 #BSUB -P lemmon
 #BSUB -o %J.out
 #BSUB -e %J.err
 #BSUB -W 1:00
 #BSUB -q general
-#BSUB -n 8
+#BSUB -n 2
 #BSUB -B
 #BSUB -N
 #BSUB -u jsc228@miami.edu
 
-cd /nethome/jsc228
-wget -qO- https://get.nextflow.io | bash
-chmod +x nextflow
+export NETHOME=/nethome/jsc228/LipidModule
+export LIPID_HOME=/scratch/projects/lemmon/jsc228/LipidModule
+cd /nethome/jsc228/LipidModule
+source setup_environment.sh
