@@ -24,6 +24,8 @@ cd ${SCRATCH}/LipidModule
 
 module load java/1.8.0_60
 
+export NXF_WORK=${SCRATCH}/LipidModule
 nextflow run rnaseq-processing.nf \
   -profile conda,lsf \
-  -resume
+  -resume \
+  -w ${SCRATCH}/LipidModule
