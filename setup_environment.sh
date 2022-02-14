@@ -31,7 +31,7 @@ echo ${NETHOME}
 echo "SCRATCH:"
 echo ${LIPID_HOME}
 
-cd {NETHOME}
+cd ${NETHOME}
 
 
 # Download sra tools ----------------------------------------------------------------------
@@ -81,7 +81,7 @@ then
   bash ${HOME}/miniconda.sh -b -p ${HOME}/miniconda3
 
   echo Miniconda3 installed, removing installation script...
-  rm -f {HOME}/miniconda.sh
+  rm -f ${HOME}/miniconda.sh
 
   echo Setting up Miniconda3...; sleep 1s
   source "${HOME}/miniconda3/etc/profile.d/conda.sh"
@@ -199,6 +199,3 @@ then
   fi
   mv nextflow bin/
 fi
-cd ${NETHOME}
-
-cp ${NETHOME} ${LIPID_HOME}
