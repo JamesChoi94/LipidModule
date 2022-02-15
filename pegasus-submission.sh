@@ -11,19 +11,17 @@
 #BSUB -u jsc228@miami.edu
 
 export NETHOME=/nethome/jsc228/LipidModule
-export SCRATCH=/scratch/projects/lemmon/jsc228
+export SCRATCH=/scratch/projects/lemmon/jsc228/LipidModule
+
 cd ${NETHOME}
 source setup_environment.sh
-cd ${NETHOME}
-cd ..
-rsync -r ${NETHOME} ${SCRATCH}/LipidModule
-# cd ${SCRATCH}/LipidModule
-cd ${NETHOME}
-
+rsync -rEl --exclude "*.out" --exclude "*.err" --exclude ".nextflow.log*" \
+  ${NETHOME} ${SCRATCH}
 module load java/1.8.0_60
-
-export NXF_WORK=${SCRATCH}/LipidModule
+mkdir -p ${SCRATCH}/work
+export NXF_WORK=${SCRATCH}/work
+cd ${NETHOME}
 nextflow run rnaseq-processing.nf \
   -profile conda,lsf \
   -resume \
-  -w ${SCRATCH}/LipidModule
+  -w ${SCRATCH}/work

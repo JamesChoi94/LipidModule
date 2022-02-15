@@ -31,29 +31,51 @@ echo ${NETHOME}
 echo "SCRATCH:"
 echo ${SCRATCH}
 
-cd ${NETHOME}
+
+# Please note!! --------------------------------------
+cd ${NETHOME} 
+# ----------------------------------------------------
 
 
 # Download sra tools ----------------------------------------------------------------------
 
-if [[ ! -f bin/sratoolkit.2.11.3-ubuntu64.tar.gz ]]
+# Downloads sra-toolkit into bin/ directory in $HOME. This is to ensure that 
+# sra-toolkit commands are available in $PATH with every session.
+if [[ ! -f ${HOME}/bin/sratoolkit.2.11.3-ubuntu64.tar.gz ]]
 then
   echo sra-tools v.2.11.3 is not available through bioconda. Installing directly from NCBI...
-  wget -P bin/ https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.11.3/sratoolkit.2.11.3-ubuntu64.tar.gz
+  wget -P ${HOME}/bin/ https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.11.3/sratoolkit.2.11.3-ubuntu64.tar.gz
 fi
-if [[ ! -d bin/sratoolkit.2.11.3-ubuntu64 ]]
+if [[ ! -d ${HOME}/bin/sratoolkit.2.11.3-ubuntu64 ]]
 then
-  tar -vxzf bin/sratoolkit.2.11.3-ubuntu64.tar.gz -C bin/
+  tar -vxzf ${HOME}/bin/sratoolkit.2.11.3-ubuntu64.tar.gz -C ${HOME}/bin/
 fi
 
-echo Extracting sra-tools configuration file...
 # Import SRA tools config, which can be prepared on a separate machine beforehand 
 # e.g. on my local machine:
 # tar -czvf sratoolkit-vdb-config_ec2-setup.tar.gz .ncbi/
+echo Extracting sra-tools configuration file...
 tar -xvzf config/sra-tools-2.11.3-vdb-config.tar.gz -C ${HOME}
-export PATH=/bin/sratoolkit.2.11.3-ubuntu64/bin:$PATH
-echo "PATH:"
-echo $PATH
+# Since sra-tools is downloaded into $HOME/bin, no need to export $PATH.
+# However, session needs to be restarted.
+# export PATH=/bin/sratoolkit.2.11.3-ubuntu64/bin:$PATH
+
+
+
+# Install nextflow ------------------------------------------------------------------------
+
+# Installs nextflow into a bin/ folder in home directory
+if [[ ! -f ${HOME}/bin/nextflow ]]
+then
+  if [[ ! -f ${HOME}/nextflow ]]
+  then
+    cd ${HOME}
+    mkdir bin
+    wget -qO- https://get.nextflow.io | bash
+    chmod +x nextflow
+  fi
+  mv nextflow bin/
+fi
 
 
 
@@ -183,19 +205,4 @@ then
   wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M28/gencode.vM28.annotation.gtf.gz \
     -P ref/
   gunzip ref/gencode.vM28.annotation.gtf.gz
-fi
-
-
-# Install nextflow ------------------------------------------------------------------------
-
-if [[ ! -f ${HOME}/bin/nextflow ]]
-then
-  if [[ ! -f ${HOME}/nextflow ]]
-  then
-    cd ${HOME}
-    mkdir bin
-    wget -qO- https://get.nextflow.io | bash
-    chmod +x nextflow
-  fi
-  mv nextflow bin/
 fi
