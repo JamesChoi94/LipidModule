@@ -181,15 +181,16 @@ else
   echo LipidModule virtual environment does not exist.; sleep 1s
 fi
 
-if [ $REINSTALL_ENV == 1 ]
+if [[ $REINSTALL_ENV == 1 ]]
 then
   echo Creating the LipidModule virtual environment using conda...; sleep 1s
-  if [ "$(uname -m)" == "x86_64" ]
-  then
-	  conda create --name LipidModule --file config/LipidModule.txt
-  else
-	  conda env create -f config/LipidModule.yml
-  fi
+  conda env create -f config/LipidModule.yml
+  # if [ "$(uname -m)" == "x86_64" ]
+  # then
+	#   conda create --name LipidModule --file config/LipidModule.txt
+  # else
+	#   conda env create -f config/LipidModule.yml
+  # fi
 fi
 
 echo Removing unused packages and caches using conda...
