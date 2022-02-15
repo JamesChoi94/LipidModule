@@ -176,6 +176,8 @@ fi
 echo Removing unused packages and caches using conda...
 sleep 1s # Slows down script to make terminal output more readable
 conda clean --all --yes
+conda config --add channels conda-forge
+conda config --add channels bioconda
 
 echo -e Script finished!
 
