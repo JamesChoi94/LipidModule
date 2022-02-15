@@ -78,11 +78,11 @@ workflow {
   fastq_reads = Dump_FASTQ.out.fastq_reads
   
   // // Use this chunk for test runs ------
-  fastq_reads = Channel
-    .fromFilePairs(params.testReads)
-  // fastq_reads
-  //   .view{r -> "key: ${r[0]} read1: ${r[1][0]} read2: ${r[1][1]}"}
-  // // ------------------------------------
+  if ( params.forTesting ) {
+    fastq_reads = Channel
+      .fromFilePairs(params.testReads)
+  }
+ // ------------------------------------
 
   Raw_FastQC(fastq_reads)
   Trim_Adapters(fastq_reads)

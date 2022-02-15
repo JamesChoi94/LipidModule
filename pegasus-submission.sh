@@ -25,6 +25,7 @@ export SCRATCH=/scratch/projects/lemmon/jsc228/LipidModule
 # All commands/dirs should be relative to NETHOME
 cd ${NETHOME}
 module load java/1.8.0_60 # java/1.8.0_60+ is sufficient
+module load R/4.1.0 # allows Rscript from command line
 
 # Make sure script files are executable
 find . -type f \( -iname "*.sh" -o -iname "*.r" \) -exec chmod +x {} \;
