@@ -122,7 +122,7 @@ then
       REINSTALL_ENV=1
     else
       echo LipidModule virtual environment is up to date. Exiting script.
-      exit 0
+      return 0
     fi
   else 
     conda env export --name LipidModule > config/tmp_env.yml
@@ -133,7 +133,7 @@ then
       REINSTALL_ENV=1
     else
       echo LipidModule virtual environment is up to date. Exiting script.
-      exit 0
+      return 0
     fi
   fi
 # If environment does not exist...
