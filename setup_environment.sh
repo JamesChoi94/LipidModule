@@ -105,7 +105,7 @@ fi
 
 echo Checking if LipidModule virtual environment is already installed...
 sleep 1s
-if [ -d ${HOME}/miniconda3/envs/LipidModule ]
+if [[ -d ${HOME}/miniconda3/envs/LipidModule ]]
 # True if environment exists exists and is directory...
 then
   REINSTALL_ENV=0
@@ -143,7 +143,7 @@ else
 fi
 
 echo Creating the LipidModule virtual environment using conda...; sleep 1s
-if [ REINSTALL_ENV == 1 ]
+if [ $REINSTALL_ENV == 1 ]
 then
   if [ "$(uname -m)" == "x86_64" ]
   then
