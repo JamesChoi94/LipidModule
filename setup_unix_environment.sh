@@ -136,7 +136,7 @@ sleep 1s
 if [[ -d ${HOME}/miniconda3/envs/LipidModule ]]
 # True if environment exists exists and is directory...
 then
-  REINSTALL_ENV=0
+  INSTALL_ENV=0
   echo The LipidModule virtual environment already exists.; sleep 1s
   echo Checking if installed packages are current...; sleep 1s
   conda env export --name LipidModule > config/tmp_env.yml
@@ -144,53 +144,21 @@ then
   rm config/tmp_env.yml
   if [ ${ENV_DIFF} -ge 1 ]
   then
-    REINSTALL_ENV=1
+    conda env update --name LipidModule --file config/LipidModule.yml --prune
   else
     echo LipidModule virtual environment is up to date. Exiting script.
     return 0
   fi
-
-  # if [ "$(uname -m)" == "x86_64" ]
-  # then
-  #   conda list --explicit > config/tmp_env.txt
-  #   ENV_DIFF=$(diff config/tmp_env.txt config/LipidModule.txt | wc -l)
-  #   rm config/tmp_env.txt
-  #   if [ ${ENV_DIFF} -ge 1 ]
-  #   # True if environment specifications not identical
-  #   then
-  #     REINSTALL_ENV=1
-  #   else
-  #     echo LipidModule virtual environment is up to date. Exiting script.
-  #     return 0
-  #   fi
-  # else 
-  #   conda env export --name LipidModule > config/tmp_env.yml
-  #   ENV_DIFF=$(diff config/tmp_env.yml config/LipidModule.yml | wc -l)
-  #   rm config/tmp_env.yml
-  #   if [ ${ENV_DIFF} -ge 1 ]
-  #   then
-  #     REINSTALL_ENV=1
-  #   else
-  #     echo LipidModule virtual environment is up to date. Exiting script.
-  #     return 0
-  #   fi
-  # fi
 # If environment does not exist...
 else
-  REINSTALL_ENV=1
+  INSTALL_ENV=1
   echo LipidModule virtual environment does not exist.; sleep 1s
 fi
 
-if [[ $REINSTALL_ENV == 1 ]]
+if [[ $INSTALL_ENV == 1 ]]
 then
   echo Creating the LipidModule virtual environment using conda...; sleep 1s
   conda env create -f config/LipidModule.yml
-  # if [ "$(uname -m)" == "x86_64" ]
-  # then
-	#   conda create --name LipidModule --file config/LipidModule.txt
-  # else
-	#   conda env create -f config/LipidModule.yml
-  # fi
 fi
 
 echo Removing unused packages and caches using conda...
