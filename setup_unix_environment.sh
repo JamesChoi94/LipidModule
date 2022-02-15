@@ -62,7 +62,10 @@ export PATH=${HOME}/bin/sratoolkit.2.11.3-ubuntu64/bin:$PATH
 
 # Install EDirect -------------------------------------------------------------------------
 
-sh -c "$(wget -q ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh -O ${HOME}/bin)"
+if [[ -d ${HOME}/bin/edirect ]]
+then
+  sh -c "$(wget -q ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh -O ${HOME}/bin)"
+fi
 export PATH=${PATH}:${HOME}/bin/edirect
 
 # Install nextflow ------------------------------------------------------------------------
