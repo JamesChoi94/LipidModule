@@ -31,6 +31,7 @@ module load R/4.1.0 # allows Rscript from command line
 find . -type f \( -iname "*.sh" -o -iname "*.r" \) -exec chmod +x {} \;
 source setup_unix_environment.sh
 
+
 ####################################################
 # Copy NETHOME directory to SCRATCH
 ####################################################

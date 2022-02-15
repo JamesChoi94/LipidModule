@@ -56,9 +56,14 @@ fi
 # tar -czvf sratoolkit-vdb-config_ec2-setup.tar.gz .ncbi/
 echo Extracting sra-tools configuration file...
 tar -xvzf config/sra-tools-2.11.3-vdb-config.tar.gz -C ${HOME}
-# export PATH=/bin/sratoolkit.2.11.3-ubuntu64/bin:$PATH
+export PATH=${HOME}/bin/sratoolkit.2.11.3-ubuntu64/bin:$PATH
 
 
+
+# Install EDirect -------------------------------------------------------------------------
+
+sh -c "$(wget -q ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh -O ${HOME}/bin)"
+export PATH=${PATH}:${HOME}/bin/edirect
 
 # Install nextflow ------------------------------------------------------------------------
 
