@@ -2,6 +2,11 @@
 
 nextflow.enable.dsl=2
 
+
+// ##################################################################
+// Import modules 
+// ##################################################################
+
 include {Query_GEO; Compile_GEO_Queries} from "./modules/Query_GEO"
 include {Dump_FASTQ} from "./modules/Dump_FASTQ"
 include {Raw_FastQC; Trimmed_FastQC} from "./modules/FastQC"
@@ -9,8 +14,10 @@ include {Trim_Adapters} from "./modules/Trim_Adapters"
 include {Build_Index} from "./modules/Build_Index"
 include {Align_Reads} from "./modules/Align_Reads"
 
+
+// ##################################################################
 // Intro message
-//-------------------------------------------------------------------------
+// ##################################################################
 
 def scriptbreak = "==========================================================================="
 
@@ -41,16 +48,15 @@ println "dataDir:               $params.dataDir"
 println ""
 
 
+// ##################################################################
+// Main workflow run
+// ##################################################################
+
 workflow {
 
-  // def readFiles = params.readsDir + "/" + "*_{1,2}.fastq"
-  // println "$readFiles"
-
-  // readPairs     = Channel.fromFilePairs(readFiles, checkIfExists:true)
   alignerMethod = Channel.of('hisat2', 'STAR')
   trimmerMethod = Channel.of('bbduk.sh', 'cutadapt')
   samplesheet   = Channel.fromPath(params.samplesheet)
-  // reads         = Channel.fromPath(params.readsDir + "/*_{1,2}.fastq")
   
   /* Query GEO db for GSM to SRR mappings */
   Query_GEO(samplesheet)
@@ -72,9 +78,9 @@ workflow {
   fastq_reads = Dump_FASTQ.out.fastq_reads
   
   // // Use this chunk for test runs ------
-  // test_reads = Channel
-  //   .fromFilePairs(params.testReads)
-  // test_reads
+  fastq_reads = Channel
+    .fromFilePairs(params.testReads)
+  // fastq_reads
   //   .view{r -> "key: ${r[0]} read1: ${r[1][0]} read2: ${r[1][1]}"}
   // // ------------------------------------
 

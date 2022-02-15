@@ -56,8 +56,6 @@ fi
 # tar -czvf sratoolkit-vdb-config_ec2-setup.tar.gz .ncbi/
 echo Extracting sra-tools configuration file...
 tar -xvzf config/sra-tools-2.11.3-vdb-config.tar.gz -C ${HOME}
-# Since sra-tools is downloaded into $HOME/bin, no need to export $PATH.
-# However, session needs to be restarted.
 # export PATH=/bin/sratoolkit.2.11.3-ubuntu64/bin:$PATH
 
 
@@ -187,22 +185,3 @@ echo The LipidModule environment can be activated using the command...
 echo -e	"\t \$ conda activate LipidModule"
 echo A conda virtual environment can be deactivated using the command...
 echo -e	"\t \$ conda deactivate"
-
-
-# Download necessary genome FASTAs and GTFs -----------------------------------------------
-
-# FASTA
-if [[ ! -f ref/GRCm39.primary_assembly.genome.fa ]]
-then
-  wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M28/GRCm39.primary_assembly.genome.fa.gz \
-    -P ref/
-  gunzip ref/GRCm39.primary_assembly.genome.fa.gz
-fi
-
-# GTF
-if [[ ! -f ref/gencode.vM28.annotation.gtf ]]
-then
-  wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M28/gencode.vM28.annotation.gtf.gz \
-    -P ref/
-  gunzip ref/gencode.vM28.annotation.gtf.gz
-fi
