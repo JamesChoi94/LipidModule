@@ -11,8 +11,6 @@ process Build_Index {
   path(star_index), emit: index
 
   script:
-  // alignerDir = path("${params.genomeDir}/${params.aligner}_index")
-  // mkdirResult = alignerDir.mkdirs()
   if(params.aligner == "STAR")
   """
   mkdir star_index
