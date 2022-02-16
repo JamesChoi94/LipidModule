@@ -1,6 +1,6 @@
 process Raw_FastQC {
   
-  tag "$fastq_reads"
+  tag "$srrAccession"
   publishDir "$params.FastQCDir/raw/", mode: "copy"
   label "Raw_FastQC"
 
@@ -19,7 +19,7 @@ process Raw_FastQC {
 
 process Trimmed_FastQC {
   
-  tag "$fastq_reads"
+  tag "$srrAccession"
   publishDir "$params.FastQCDir/trimmed/", mode: "copy"
   label "Trimmed_FastQC"
 

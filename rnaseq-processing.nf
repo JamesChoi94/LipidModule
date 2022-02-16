@@ -91,10 +91,11 @@ workflow {
   trimmed_reads = Trim_Adapters.out.trimmed_reads
   Trimmed_FastQC(trimmed_reads)
 
+  if ( ! params.forTesting ) {
+    Build_Index(genomeFasta, annotationGTF)
+    Align_Reads(trimmed_reads)
+  }
   
-  Build_Index(genomeFasta, annotationGTF)
-
   // test_reads.get(1).view()
   // println "${params.genomeDir}/${params.aligner}_index"
-  Align_Reads(trimmed_reads)
 }

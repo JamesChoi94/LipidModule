@@ -1,6 +1,5 @@
 process Query_GEO {
   
-  tag "$geoAccession"
   publishDir "$params.queryGEODir", mode: "copy"
   label "Query_GEO"
 
