@@ -33,11 +33,12 @@ source setup_unix_environment.sh
 
 
 ####################################################
-# Copy NETHOME directory to SCRATCH
+# Copy NETHOME directory to SCRATCH and cd
 ####################################################
 
 rsync -rEl --exclude "*.out" --exclude "*.err" --exclude ".nextflow.log*" \
   ${NETHOME} ${SCRATCH}
+cd ${SCRATCH}
 
 ####################################################
 # Download necessary genome FASTAs and GTFs
