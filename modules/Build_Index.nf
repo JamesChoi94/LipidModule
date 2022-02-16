@@ -19,7 +19,7 @@ process Build_Index {
    STAR --runMode genomeGenerate \
     --genomeDir ${params.indexDir} \
     --genomeFastaFiles ${genome_fasta} \
-    --sjdbGTFfile  ${annotation_GTF} \
+    --sjdbGTFfile  ${annotation_gtf} \
     --runThreadN ${task.cpus}
   """
 }
