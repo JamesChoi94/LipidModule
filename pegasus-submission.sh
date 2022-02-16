@@ -3,7 +3,7 @@
 #BSUB -P lemmon
 #BSUB -o %J.out
 #BSUB -e %J.err
-#BSUB -W 1:00
+#BSUB -W 3:00
 #BSUB -q general
 #BSUB -n 12
 #BSUB -B
