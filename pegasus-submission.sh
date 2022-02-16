@@ -73,6 +73,6 @@ export NXF_WORK=${SCRATCH}/work
 ####################################################
 
 nextflow run rnaseq-processing.nf \
-  -profile condaLSF \
+  -profile condaLSF,lsf \
   -resume \
   -w ${SCRATCH}/work

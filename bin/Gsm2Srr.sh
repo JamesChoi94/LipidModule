@@ -1,5 +1,5 @@
 #!/bin/bash
-exec1>esearch-runinfo.txt
+exec 1> esearch-runinfo.txt
 SAMPLE_SHEET_PATH=""
 while [[ "$#" ]]
 do
