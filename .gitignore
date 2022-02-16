@@ -1,6 +1,9 @@
 # Dont track results
 results/**
 
+# Deprecated material
+**/deprecated
+
 # Dont track downloaded sra-tools tarballs
 bin/sratoolkit.*.tar.gz
 bin/sratoolkit**
