@@ -16,6 +16,7 @@ process Trim_Adapters {
   script:
   """
   bbduk.sh \
+    -Xmx2g \
     in=${fastq_reads[0]} \
     in2=${fastq_reads[1]} \
     out=${srrAccession}_1.bbduk.fastq \

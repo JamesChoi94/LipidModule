@@ -143,7 +143,7 @@ then
   conda env export --name LipidModule > config/tmp_env.yml
   ENV_DIFF=$(diff config/tmp_env.yml config/LipidModule.yml | wc -l)
   rm config/tmp_env.yml
-  if [ ${ENV_DIFF} -ge 1 ]
+  if [ "${ENV_DIFF}" -ge 1 ]
   then
     conda env update --name LipidModule --file config/LipidModule.yml --prune
   else

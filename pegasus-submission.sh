@@ -26,8 +26,9 @@ export SCRATCH=/scratch/projects/lemmon/jsc228/LipidModule
 cd ${NETHOME}
 module load java/1.8.0_60 # java/1.8.0_60+ is sufficient
 module load R/4.1.0 # allows Rscript from command line
+export PATH=$PATH:/${HOME}/miniconda3/envs/LipidModule/bbtools/lib
 
-# Make sure script files are executable
+# Make sure script files are executable 
 find . -type f \( -iname "*.sh" -o -iname "*.r" \) -exec chmod +x {} \;
 source setup_unix_environment.sh
 
