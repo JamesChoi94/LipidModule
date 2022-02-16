@@ -36,7 +36,7 @@ source setup_unix_environment.sh
 # Copy NETHOME directory to SCRATCH and cd
 ####################################################
 
-rsync -rpW --exclude "*.out" --exclude "*.err" --exclude ".nextflow.log*" \
+rsync -rpWl --exclude "*.out" --exclude "*.err" --exclude ".nextflow.log*" \
   ${NETHOME} ${SCRATCH}
 cd ${SCRATCH}
 
