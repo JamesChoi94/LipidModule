@@ -1,7 +1,7 @@
 process Build_Index {
 
   tag "${params.aligner}"
-  publishDir "params.indexDir", mode: "copy"
+  publishDir "$params.indexDir", mode: "copy"
 
   input:
   path(genome_fasta)
@@ -15,7 +15,7 @@ process Build_Index {
   """
   mkdir star_index
    STAR --runMode genomeGenerate \
-    --genomeDir ${params.indexDir} \
+    --genomeDir star_index \
     --genomeFastaFiles ${genome_fasta} \
     --sjdbGTFfile  ${annotation_gtf} \
     --runThreadN ${task.cpus}
