@@ -1,6 +1,6 @@
 process Query_GEO {
   
-  cache: "lenient"
+  cache 'lenient'
   publishDir "$params.queryGEODir", mode: "copy"
   label "Query_GEO"
 
@@ -18,7 +18,7 @@ process Query_GEO {
 
 process Compile_GEO_Queries {
 
-  cache: "lenient"
+  cache 'lenient'
   publishDir "$params.dataDir",  mode: "copy"
 
   input:
