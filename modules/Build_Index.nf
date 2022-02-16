@@ -1,21 +1,25 @@
 process Build_Index {
 
   tag "${params.aligner}"
-  publishDir "params.genomeDir", mode: "copy"
+  publishDir "params.indexDir", mode: "copy"
+
+  input:
+  path(genome_fasta)
+  path(annotation_gtf)
 
   output:
-  path("${params.aligner}_index"), emit: index
+  path(star_index), emit: index
 
   script:
   // alignerDir = path("${params.genomeDir}/${params.aligner}_index")
   // mkdirResult = alignerDir.mkdirs()
   if(params.aligner == "STAR")
   """
-  mkdir ${projectDir}/${params.genomeDir}/${params.aligner}_index
+  mkdir star_index
    STAR --runMode genomeGenerate \
-    --genomeDir ${params.genomeDir}/${params.aligner}_index \
-    --genomeFastaFiles ${params.genomeFasta} \
-    --sjdbGTFfile  ${params.annotationGTF} \
+    --genomeDir ${params.indexDir} \
+    --genomeFastaFiles ${genome_fasta} \
+    --sjdbGTFfile  ${annotation_GTF} \
     --runThreadN ${task.cpus}
   """
 }

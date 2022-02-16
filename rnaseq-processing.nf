@@ -57,6 +57,8 @@ workflow {
   alignerMethod = Channel.of('hisat2', 'STAR')
   trimmerMethod = Channel.of('bbduk.sh', 'cutadapt')
   samplesheet   = Channel.fromPath(params.samplesheet)
+  genomeFasta = Channel.fromPath(params.genomeFasta)
+  annotationGTF = Channel.fromPath(params.annotationGTF)
   
   /* Query GEO db for GSM to SRR mappings */
   Query_GEO(samplesheet)
@@ -89,7 +91,8 @@ workflow {
   trimmed_reads = Trim_Adapters.out.trimmed_reads
   Trimmed_FastQC(trimmed_reads)
 
-  Build_Index()
+  
+  Build_Index(genomeFasta, annotationGTF)
 
   // test_reads.get(1).view()
   // println "${params.genomeDir}/${params.aligner}_index"
