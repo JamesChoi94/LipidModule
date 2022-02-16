@@ -37,7 +37,7 @@ source setup_unix_environment.sh
 ####################################################
 
 rsync -rpWl --exclude "*.out" --exclude "*.err" --exclude ".nextflow.log*" \
-  ${NETHOME} ${SCRATCH}
+  ${NETHOME}/ ${SCRATCH}
 cd ${SCRATCH}
 
 ####################################################
