@@ -86,12 +86,12 @@ workflow {
 
   Raw_FastQC(fastq_reads)
   Trim_Adapters(fastq_reads)
-  // trimmed_reads = Trim_Adapters.out.trimmed_reads
-  Trimmed_FastQC(Trim_Adapters.out.trimmed_reads)
+  trimmed_reads = Trim_Adapters.out.trimmed_reads
+  Trimmed_FastQC(trimmed_reads)
 
-  // Build_Index()
+  Build_Index()
 
   // test_reads.get(1).view()
   // println "${params.genomeDir}/${params.aligner}_index"
-  // Align_Reads(fastq_reads)
+  Align_Reads(trimmed_reads)
 }
