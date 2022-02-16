@@ -1,6 +1,6 @@
 process Trim_Adapters {
 
-  tag "$fastq_reads"
+  tag "$srrAccession"
   publishDir "$params.BBdukDir", mode: "copy", pattern: "*_bbduk-stats.txt"
 
 

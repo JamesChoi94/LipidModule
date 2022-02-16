@@ -82,6 +82,7 @@ then
   fi
   mv nextflow bin/
 fi
+# export PATH=${PATH}:${HOME}/bin/edirect
 
 
 
@@ -161,11 +162,11 @@ then
   conda env create -f config/LipidModule.yml
 fi
 
-echo Removing unused packages and caches using conda...
-sleep 1s # Slows down script to make terminal output more readable
-conda clean --all --yes
-conda config --add channels conda-forge
-conda config --add channels bioconda
+# echo Removing unused packages and caches using conda...
+# sleep 1s # Slows down script to make terminal output more readable
+# conda clean --all --yes
+# conda config --add channels conda-forge
+# conda config --add channels bioconda
 
 echo -e Script finished!
 
