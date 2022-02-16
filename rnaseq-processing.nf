@@ -93,7 +93,7 @@ workflow {
 
   if ( ! params.forTesting ) {
     Build_Index(genomeFasta, annotationGTF)
-    Align_Reads(trimmed_reads)
+    Align_Reads(trimmed_reads, Build_Index.out.index)
   }
   
   // test_reads.get(1).view()
