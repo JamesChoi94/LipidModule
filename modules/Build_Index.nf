@@ -7,10 +7,11 @@ process Build_Index {
   path("${params.aligner}_index"), emit: index
 
   script:
-  alignerDir = path("${params.genomeDir}/${params.aligner}_index")
-  mkdirResult = alignerDir.mkdirs()
+  // alignerDir = path("${params.genomeDir}/${params.aligner}_index")
+  // mkdirResult = alignerDir.mkdirs()
   if(params.aligner == "STAR")
   """
+  mkdir ${projectDir}/${params.genomeDir}/${params.aligner}_index
    STAR --runMode genomeGenerate \
     --genomeDir ${params.genomeDir}/${params.aligner}_index \
     --genomeFastaFiles ${params.genomeFasta} \
