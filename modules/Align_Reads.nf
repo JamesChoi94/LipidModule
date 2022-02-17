@@ -18,7 +18,7 @@ process Align_Reads {
     --genomeDir ${index} \
     --readFilesIn ${fastq_reads[0]} ${fastq_reads[1]} \
     --runThreadN ${task.cpus} \
-    --genomeLoad LoadAndRemove \
+    --genomeLoad LoadAndExit \
     --outSAMmultNmax 1 
   """
 }
