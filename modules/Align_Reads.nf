@@ -1,7 +1,7 @@
 process Align_Reads {
 
   tag "${params.aligner}_${srrAccession}"
-  publishDir "params.bamsDir", mode: "copy"
+  publishDir "$params.bamsDir", mode: "copy"
 
   input:
   tuple val(srrAccession), path(fastq_reads)
