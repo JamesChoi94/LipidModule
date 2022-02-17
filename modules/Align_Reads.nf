@@ -14,9 +14,6 @@ process Align_Reads {
   if(params.aligner == "STAR")
   """
   STAR \
-    --genomeDir ${index} \
-    --genomeLoad Remove
-  STAR \
     --runMode alignReads \
     --genomeDir ${index} \
     --readFilesIn ${fastq_reads[0]} ${fastq_reads[1]} \
@@ -25,3 +22,6 @@ process Align_Reads {
     --outSAMmultNmax 1 
   """
 }
+// STAR \
+//     --genomeDir ${index} \
+//     --genomeLoad Remove
