@@ -73,7 +73,10 @@ workflow {
     srrAccession = r['SRR_Accession']
     return srrAccession
   }
-  .take(1)
+
+  if ( params.forTesting ) {
+    srrAcccession = srrAcccession.take(1)
+  }
 
   // Uncomment DumpFASTQ for runs ------
   Dump_FASTQ(srrAccession)
