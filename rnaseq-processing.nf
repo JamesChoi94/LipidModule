@@ -96,7 +96,7 @@ workflow {
     Align_Reads(trimmed_reads, Build_Index.out.index)
   }
   index = Channel.fromPath(params.indexDir)
-  Align_Reads(trimmed_reads, index)
+  // Align_Reads(trimmed_reads, index)
   // test_reads.get(1).view()
   // println "${params.genomeDir}/${params.aligner}_index"
 }
