@@ -73,10 +73,11 @@ workflow {
     srrAccession = r['SRR_Accession']
     return srrAccession
   }
+  .take(1)
 
-  if ( params.forTesting ) {
-    srrAcccession = srrAcccession.take(1)
-  }
+  // if ( params.forTesting ) {
+  //   srrAcccession = srrAcccession.take(1)
+  // }
 
   // Uncomment DumpFASTQ for runs ------
   Dump_FASTQ(srrAccession)
@@ -94,12 +95,15 @@ workflow {
   trimmed_reads = Trim_Adapters.out.trimmed_reads
   Trimmed_FastQC(trimmed_reads)
 
-  if ( ! params.forTesting ) {
+  if ( params.forTesting ) {
+    index = Channel.fromPath(params.indexDir)
+  } else {
     Build_Index(genomeFasta, annotationGTF)
-    Align_Reads(trimmed_reads, Build_Index.out.index)
+    index = Build_Index.out.index
   }
   index = Channel.fromPath(params.indexDir)
-  // Align_Reads(trimmed_reads, index)
+  Align_Reads(trimmed_reads, index)
+  aligned = Align_Reads.out.star_out.view()
   // test_reads.get(1).view()
   // println "${params.genomeDir}/${params.aligner}_index"
 }

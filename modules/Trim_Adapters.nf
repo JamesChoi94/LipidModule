@@ -1,7 +1,7 @@
 process Trim_Adapters {
 
   tag "$srrAccession"
-  publishDir {  ${params.BBdukDir} ? ${params.BBdukDir} : false }, mode: "copy", pattern: "*_bbduk-stats.txt"
+  publishDir { params.BBdukDir ? params.BBdukDir : false }, mode: "copy", pattern: "*_bbduk-stats.txt"
   // publishDir "$params.BBdukDir", mode: "copy", pattern: "*_bbduk-stats.txt"
 
 

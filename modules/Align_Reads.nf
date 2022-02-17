@@ -8,7 +8,7 @@ process Align_Reads {
   path(index)
   
   output:
-  tuple val(srrAccession), path("*.sam"), emit: star_sam
+  tuple val(srrAccession), path("*"), emit: star_out
 
   script:
   if(params.aligner == "STAR")
@@ -18,6 +18,7 @@ process Align_Reads {
     --genomeDir ${index} \
     --readFilesIn ${fastq_reads[0]} ${fastq_reads[1]} \
     --runThreadN ${task.cpus} \
+    --outFileNamePrefix ${srrAccession}_ \
     --genomeLoad LoadAndExit \
     --outSAMmultNmax 1 
   """
