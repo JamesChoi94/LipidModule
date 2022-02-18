@@ -77,6 +77,6 @@ export NXF_WORK=${SCRATCH}/work
 ####################################################
 
 nextflow run rnaseq-processing.nf \
-  -profile lsf,testing \
+  -profile lsf \
   -resume \
   -w ${SCRATCH}/work
