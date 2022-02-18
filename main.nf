@@ -105,17 +105,17 @@ workflow {
   Trimmed_FastQC(trimmed_reads)
 
   // Build genome index -------------------------------------------
-  
+
   // If test run, use fasta/gtf subset. 
   // If new index not needed, use existing.
   if ( params.testBuildNewIndex ) {
 
-    Build_Index(testGenomeFasta, testAnnotationGTF)
+    Build_Index(testGenomeFasta, testAnnotationGTF, alignerMethod)
     index = Build_Index.out.index
 
   } else if ( params.buildNewIndex ) {
 
-    Build_Index(genomeFasta, annotationGTF)
+    Build_Index(genomeFasta, annotationGTF, alignerMethod)
     index = Build_Index.out.index
 
   } else {

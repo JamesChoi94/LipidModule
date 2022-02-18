@@ -1,17 +1,18 @@
 process Align_Reads {
 
-  tag "${params.alignerMethod}_${srrAccession}"
+  tag "${alignerMethod}_${srrAccession}"
   publishDir "$params.bamsDir", mode: "copy"
 
   input:
   tuple val(srrAccession), path(fastq_reads)
+  val(alignerMethod)
   path(index)
   
   output:
   tuple val(srrAccession), path("*"), emit: star_out
 
   script:
-  if(params.alignerMethod == "STAR")
+  if(alignerMethod == "STAR")
   """
   STAR \
     --runMode alignReads \

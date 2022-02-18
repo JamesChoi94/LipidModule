@@ -1,17 +1,18 @@
 process Build_Index {
 
-  tag "${params.aligner}"
+  tag "${params.alignerMethod}"
   publishDir "$params.genomeDir", mode: "copy"
 
   input:
   path(genome_fasta)
   path(annotation_gtf)
+  val(alignerMethod)
 
   output:
   path(star_index), emit: index
 
   script:
-  if(params.alignerMethod == "STAR")
+  if(${alignerMethod} == "STAR")
   """
   mkdir star_index
    STAR --runMode genomeGenerate \
