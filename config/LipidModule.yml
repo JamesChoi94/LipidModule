@@ -10,9 +10,11 @@ dependencies:
   - alsa-lib=1.2.3=h516909a_0
   - bbtools=37.62=0
   - bzip2=1.0.8=h7f98852_4
+  - c-ares=1.18.1=h7f98852_0
   - ca-certificates=2021.10.8=ha878542_0
   - cairo=1.16.0=h6cf1ce9_1008
   - certifi=2021.10.8=py39hf3d152e_1
+  - curl=7.81.0=h494985f_0
   - cutadapt=3.5=py39h38f01e4_0
   - dnaio=0.6.0=py39h38f01e4_0
   - entrez-direct=16.2=he881be0_0
@@ -32,10 +34,14 @@ dependencies:
   - jbig=2.1=h7f98852_2003
   - jpeg=9d=h36c2ea0_0
   - kallisto=0.46.2=h60f4f9f_2
+  - krb5=1.19.2=h48eae69_3
   - lcms2=2.12=hddcbb42_0
   - ld_impl_linux-64=2.36.1=hea4e1c9_2
   - lerc=3.0=h9c3ff4c_0
+  - libcurl=7.81.0=h494985f_0
   - libdeflate=1.8=h7f98852_0
+  - libedit=3.1.20191231=he28a2e2_2
+  - libev=4.33=h516909a_1
   - libffi=3.4.2=h7f98852_5
   - libgcc-ng=11.2.0=h1d223b6_11
   - libgfortran-ng=7.5.0=h14aa051_19
@@ -43,8 +49,10 @@ dependencies:
   - libglib=2.70.2=h174f98d_1
   - libgomp=11.2.0=h1d223b6_11
   - libiconv=1.16=h516909a_0
+  - libnghttp2=1.46.0=ha19adfc_0
   - libnsl=2.0.0=h7f98852_0
   - libpng=1.6.37=h21135ba_2
+  - libssh2=1.10.0=ha35d2d1_2
   - libstdcxx-ng=11.2.0=he4da1e4_11
   - libtiff=4.3.0=h6f004c6_2
   - libuuid=2.32.1=h7f98852_1000
@@ -53,12 +61,31 @@ dependencies:
   - libxml2=2.9.12=h72842e0_0
   - libzlib=1.2.11=h36c2ea0_1013
   - lz4-c=1.9.3=h9c3ff4c_1
+  - ncbi-ngs-sdk=2.11.2=hff44eed_0
   - ncurses=6.2=h58526e2_4
   - openjdk=11.0.9.1=h5cc2fde_1
   - openssl=3.0.0=h7f98852_2
+  - ossuuid=1.6.2=hf484d3e_1000
   - pbzip2=1.1.13=0
   - pcre=8.45=h9c3ff4c_0
   - perl=5.32.1=1_h7f98852_perl5
+  - perl-business-isbn=3.007=pl5321hdfd78af_0
+  - perl-business-isbn-data=20210112.006=pl5321hdfd78af_0
+  - perl-carp=1.38=pl5321hdfd78af_4
+  - perl-constant=1.33=pl5321hdfd78af_2
+  - perl-data-dumper=2.183=pl5321h779adbc_0
+  - perl-encode=3.16=pl5321h779adbc_0
+  - perl-exporter=5.72=pl5321hdfd78af_2
+  - perl-extutils-makemaker=7.64=pl5321hd8ed1ab_0
+  - perl-file-path=2.18=pl5321hd8ed1ab_0
+  - perl-file-temp=0.2304=pl5321hd8ed1ab_0
+  - perl-mime-base64=3.16=pl5321h779adbc_1
+  - perl-parent=0.236=pl5321hdfd78af_2
+  - perl-uri=5.10=pl5321hdfd78af_0
+  - perl-xml-libxml=2.0132=pl5321h8cb1974_2
+  - perl-xml-namespacesupport=1.12=pl5321hdfd78af_1
+  - perl-xml-sax=1.02=pl5321hdfd78af_1
+  - perl-xml-sax-base=1.09=pl5321hdfd78af_1
   - pigz=2.6=h27826a3_0
   - pip=21.3.1=pyhd8ed1ab_0
   - pixman=0.40.0=h36c2ea0_0
@@ -68,8 +95,10 @@ dependencies:
   - python_abi=3.9=2_cp39
   - readline=8.1=h46c0cb4_0
   - samtools=1.3.1=0
+  - seqtk=1.3=h5bf99c6_3
   - setuptools=60.2.0=py39hf3d152e_0
   - sqlite=3.37.0=h9cd32fc_0
+  - sra-tools=2.11.0=pl5321h314213e_2
   - star=2.7.9a=h9ee0642_0
   - subread=2.0.1=h5bf99c6_1
   - tk=8.6.11=h27826a3_1
