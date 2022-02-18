@@ -1,7 +1,7 @@
 process Build_Index {
 
   tag "${params.aligner}"
-  publishDir "$params.indexDir", mode: "copy"
+  publishDir "$params.genomeDir", mode: "copy"
 
   input:
   path(genome_fasta)
@@ -11,7 +11,7 @@ process Build_Index {
   path(star_index), emit: index
 
   script:
-  if(params.aligner == "STAR")
+  if(params.alignerMethod == "STAR")
   """
   mkdir star_index
    STAR --runMode genomeGenerate \
