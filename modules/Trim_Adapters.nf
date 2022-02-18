@@ -1,7 +1,7 @@
 process Trim_Adapters {
 
   tag "$srrAccession"
-  publishDir { params.saveTrimmedFastq ? params.trimmedReadsDir : false }, mode: "copy", pattern: "*.bbduk.fastq"
+  publishDir path: { params.saveTrimmedFastq ? params.trimmedReadsDir : "work/dump" }, mode: "copy", pattern: "*.bbduk.fastq"
   publishDir "$params.BBdukDir", mode: "copy", pattern: "*_bbduk-stats.txt"
 
   label "Trim_Adapters"

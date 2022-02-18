@@ -1,7 +1,7 @@
 process Dump_FASTQ {
   
   tag "$srrAccession"
-  publishDir "$params.rawReadsDir", mode: "copy"
+  publishDir path: { params.saveRawFastq ? params.rawReadsDir : "work/dump" }, mode: "copy"
   label "Dump_FASTQ"
 
   input:

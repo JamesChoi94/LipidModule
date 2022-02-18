@@ -73,10 +73,10 @@ mkdir -p ${SCRATCH}/work
 export NXF_WORK=${SCRATCH}/work
 
 ####################################################
-# Run rnaseq-processing 
+# Run main
 ####################################################
 
-nextflow run rnaseq-processing.nf \
+nextflow run main.nf \
   -profile lsf \
   -resume \
   -w ${SCRATCH}/work
