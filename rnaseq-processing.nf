@@ -99,11 +99,11 @@ workflow {
   Trimmed_FastQC(trimmed_reads)
 
   // Build genome index. If test run, use existing index.
-  if ( params.forTesting ) {
-    index = Channel.fromPath(params.genomeDir + "/star_index")
-  } else {
+  if ( params.buildGenome ) {
     Build_Index(genomeFasta, annotationGTF)
     index = Build_Index.out.index
+  } else {
+    index = Channel.fromPath(params.genomeDir + "/star_index")
   }
   
   // Align reads
