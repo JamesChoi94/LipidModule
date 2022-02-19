@@ -125,7 +125,7 @@ workflow {
   }
   
   // Align reads ----------------------------------------------------
-  Align_Reads(trimmed_reads, alignerMethod)
+  Align_Reads(trimmed_reads, alignerMethod, index)
   aligned = Align_Reads.out.star_out.view()
   
 }

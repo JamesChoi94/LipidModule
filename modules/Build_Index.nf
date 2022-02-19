@@ -12,9 +12,9 @@ process Build_Index {
   path(star_index), emit: index
 
   script:
-  if(${alignerMethod} == "STAR")
+  if(alignerMethod == "STAR")
   """
-  mkdir star_index
+  mkdir -p star_index
    STAR --runMode genomeGenerate \
     --genomeDir star_index \
     --genomeFastaFiles ${genome_fasta} \
