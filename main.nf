@@ -125,6 +125,7 @@ workflow {
   }
   
   // Align reads ----------------------------------------------------
+  Load_Genome(alignerMethod, index)
   Align_Reads(trimmed_reads, alignerMethod, index)
   aligned = Align_Reads.out.star_out.view()
   
