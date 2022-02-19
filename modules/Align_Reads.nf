@@ -4,11 +4,11 @@ process Load_Genome {
   // publishDir "$params.bamsDir", mode: "copy"
 
   input:
-  // tuple val(srrAccession), path(fastq_reads)
   val(alignerMethod)
   path(index)
   
-  // output:
+  output:
+  val(true), emit: load_genome
   // tuple val(srrAccession), path("*"), emit: star_out
 
   script:
@@ -38,6 +38,7 @@ process Align_Reads {
   if(alignerMethod == "STAR")
   """
   STAR \
+    --genomeDir ${index} \
     --runMode alignReads \
     --readFilesIn ${fastq_reads[0]} ${fastq_reads[1]} \
     --runThreadN ${task.cpus} \
