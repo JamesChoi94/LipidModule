@@ -6,7 +6,7 @@ process Align_Reads {
   input:
   tuple val(srrAccession), path(fastq_reads)
   val(alignerMethod)
-  path(index)
+  // path(index)
   
   output:
   tuple val(srrAccession), path("*"), emit: star_out
@@ -16,7 +16,7 @@ process Align_Reads {
   """
   STAR \
     --runMode alignReads \
-    --genomeDir ${index} \
+    --genomeDir ${params.genomeDir}/star_index \
     --readFilesIn ${fastq_reads[0]} ${fastq_reads[1]} \
     --runThreadN ${task.cpus} \
     --outFileNamePrefix ${srrAccession}_ \
