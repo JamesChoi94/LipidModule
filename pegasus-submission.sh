@@ -5,7 +5,7 @@
 #BSUB -e %J.err
 #BSUB -W 24:00
 #BSUB -q general
-#BSUB -n 12
+#BSUB -n 1
 #BSUB -B
 #BSUB -N
 #BSUB -u jsc228@miami.edu
