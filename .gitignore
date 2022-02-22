@@ -21,6 +21,8 @@ ref/HISAT2_index/**
 ref/STAR_index/**
 ref/annotations/**
 ref/**.tar
+ref/**.bed
+ref/**.bed.gz
 
 # IDK
 ref/Log.out
@@ -39,6 +41,8 @@ data/*.tsv
 data/*.txt
 *.fastq
 *.sra
+*.bam
+*.sam
 
 # Dont track data files with subdirectories
 data/**/

@@ -22,3 +22,18 @@ process Build_Index {
     --runThreadN ${task.cpus}
   """
 }
+
+process Convert_GTF2BED {
+  publishDir "$params.genomeDir", mode: "copy"
+
+  input:
+  path(annotation_gtf)
+
+  output:
+  path("*.bed"), emit: annotation_bed
+
+  script:
+  """
+  bedparse gtf2bed $annotation_gtf > ${annotation_gtf}.bed
+  """
+}

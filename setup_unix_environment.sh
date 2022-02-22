@@ -39,34 +39,48 @@ cd ${NETHOME}
 
 # Download sra tools ----------------------------------------------------------------------
 
-# Downloads sra-toolkit into bin/ directory in $HOME. This is to ensure that 
-# sra-toolkit commands are available in $PATH with every session.
-if [[ ! -f ${HOME}/bin/sratoolkit.2.11.3-ubuntu64.tar.gz ]]
+# Downloads sra-toolkit into bin/ directory in $NETHOME. Make these packages available 
+# in the project directory bin/ folder so that they are available always.
+if [[ ! -f ${NETHOME}/bin/sratoolkit.2.11.3-ubuntu64.tar.gz ]]
 then
   echo sra-tools v.2.11.3 is not available through bioconda. Installing directly from NCBI...
-  wget -P ${HOME}/bin/ https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.11.3/sratoolkit.2.11.3-ubuntu64.tar.gz
+  wget -P ${NETHOME}/bin/ https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.11.3/sratoolkit.2.11.3-ubuntu64.tar.gz
 fi
-if [[ ! -d ${HOME}/bin/sratoolkit.2.11.3-ubuntu64 ]]
+if [[ ! -d ${NETHOME}/bin/sratoolkit.2.11.3-ubuntu64 ]]
 then
-  tar -vxzf ${HOME}/bin/sratoolkit.2.11.3-ubuntu64.tar.gz -C ${HOME}/bin/
+  tar -vxzf ${NETHOME}/bin/sratoolkit.2.11.3-ubuntu64.tar.gz -C ${NETHOME}/bin/
 fi
 
 # Import SRA tools config, which can be prepared on a separate machine beforehand 
 # e.g. on my local machine:
 # tar -czvf sratoolkit-vdb-config_ec2-setup.tar.gz .ncbi/
 echo Extracting sra-tools configuration file...
+# SRA toolkit looks for configuration in $HOME/.ncbi/
 tar -xvzf config/sra-tools-2.11.3-vdb-config.tar.gz -C ${HOME}
-export PATH=${HOME}/bin/sratoolkit.2.11.3-ubuntu64/bin:$PATH
-
+# But executables can be made available in $NETHOME/bin
+export PATH=${NETHOME}/bin/sratoolkit.2.11.3-ubuntu64/bin:$PATH
 
 
 # Install EDirect -------------------------------------------------------------------------
 
-if [[ -d ${HOME}/bin/edirect ]]
+if [[ -d ${NETHOME}/bin/edirect ]]
 then
-  sh -c "$(wget -q ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh -O ${HOME}/bin)"
+  sh -c "$(wget -q ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh -O ${NETHOME}/bin)"
 fi
-export PATH=${PATH}:${HOME}/bin/edirect
+export PATH=${PATH}:${NETHOME}/bin/edirect
+
+
+# # Install BEDOPS ----------------------------------------------------------------
+
+# if [[ ! -d ${NETHOME}/bin/bedops_linux_x86_64-v2.4.40/bin ]]
+# then
+#   wget https://github.com/bedops/bedops/releases/download/v2.4.40/bedops_linux_x86_64-v2.4.40.tar.bz2 \
+#     -P bin
+#   mkdir bin/bedops_linux_x86_64-v2.4.40
+#   tar -jxvf bin/bedops_linux_x86_64-v2.4.40.tar.bz2 --directory bin/bedops_linux_x86_64-v2.4.40/
+# fi
+# export PATH=${PATH}:${NETHOME}/bin/bedops_linux_x86_64-v2.4.40/bin
+
 
 # Install nextflow ------------------------------------------------------------------------
 
@@ -83,6 +97,19 @@ then
   mv nextflow bin/
 fi
 # export PATH=${PATH}:${HOME}/bin/edirect
+
+# # Alternatively, install nextflow into the project directory instead of making
+# # the executable available to user environment.
+# if [[ ! -f ${NETHOME}/bin/nextflow ]]
+# then
+#   if [[ ! -f ${NETHOME}/nextflow ]]
+#   then
+#     cd ${NETHOME}/bin
+#     wget -qO- https://get.nextflow.io | bash
+#     chmod +x nextflow
+#   fi
+# fi
+# export PATH=${PATH}:${NETHOME}/bin/edirect
 
 
 

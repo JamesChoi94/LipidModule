@@ -34,3 +34,21 @@ process Trimmed_FastQC {
   fastqc --threads ${task.cpus} ${fastq_reads}
   """
 }
+
+process Aligned_FastQC {
+
+  tag "$srrAccession"
+  publishDir "$params.FastQCDir/aligned/", mode: "copy"
+  label "Aligned_FastQC"
+
+  input:
+  tuple val(srrAccession), path(fastq_reads)
+
+  output:
+  tuple val(srrAccession), path( "*fastqc.html"), emit: aligned_fastqc_report
+
+  script:
+  """
+  fastqc --threads ${task.cpus} ${fastq_reads}
+  """
+}

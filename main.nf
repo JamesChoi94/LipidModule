@@ -12,7 +12,7 @@ include {Dump_FASTQ; Subset_Testing_FASTQ} from "./modules/Dump_FASTQ"
 include {Raw_FastQC; Trimmed_FastQC} from "./modules/FastQC"
 include {Trim_Adapters} from "./modules/Trim_Adapters"
 include {Build_Index} from "./modules/Build_Index"
-include {Align_Reads} from "./modules/Align_Reads"
+include {Align_Reads; Load_Genome} from "./modules/Align_Reads"
 
 
 // ##################################################################
@@ -77,9 +77,7 @@ workflow {
       return srrAccession
     }
   if ( params.testRun ) {
-
     srrAccession = srrAccession.take(1)
-
   }
 
   // fasterq-dump wrapper -----------------------------------------
@@ -88,10 +86,8 @@ workflow {
   
   // Take subset of reads if test run -----------------------------
   if ( params.testRun ) {
-
     Subset_Testing_FASTQ(fastq_reads)
     fastq_reads = Subset_Testing_FASTQ.out.test_reads
-
   }
 
   // FastQC on raw reads ------------------------------------------
@@ -109,25 +105,27 @@ workflow {
   // If test run, use fasta/gtf subset. 
   // If new index not needed, use existing.
   if ( params.testBuildNewIndex ) {
-
     Build_Index(testGenomeFasta, testAnnotationGTF, alignerMethod)
     index = Build_Index.out.index
-
   } else if ( params.buildNewIndex ) {
-
     Build_Index(genomeFasta, annotationGTF, alignerMethod)
     index = Build_Index.out.index
-
   } else {
-
     index = Channel.fromPath(params.existingIndex)
-
   }
+
+  // Create BED format annotation for RSeQC
+  // Convert_GTF2BED(annotation_gtf)
+  // annotation_bed = Convert_GTF2BED.out.annotation_bed
   
   // Align reads ----------------------------------------------------
   Load_Genome(alignerMethod, index)
   genome_loaded = Load_Genome.out.load_genome
   Align_Reads(trimmed_reads, alignerMethod, index, genome_loaded)
-  aligned = Align_Reads.out.star_out.view()
+  aligned_bams = Align_Reads.out.aligned_bams
+  aligned_bams.take(1).view()
   
+  // Alignment QC --------------------------------------------------
+  // Aligned_FastQC(aligned_bams)
+
 }
