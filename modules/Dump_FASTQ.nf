@@ -1,7 +1,7 @@
 process Dump_FASTQ {
   
   tag "$srrAccession"
-  publishDir path: { params.saveRawFastq ? params.rawReadsDir : "work/dump" }, mode: "copy"
+  publishDir path: { params.saveRawFastq ? params.rawReadsDir : null }, mode: "copy"
   label "Dump_FASTQ"
 
   input:
@@ -34,21 +34,3 @@ process Subset_Testing_FASTQ {
   seqtk sample -s 100 ${fastq_reads[1]} 10000 > ${srrAccession}_2.subset.fastq
   """
 }
-
-// process Check_FASTQ {
-  
-//   // tag "$srrAccession"
-//   // publishDir "$params.rawReadsDir", mode: "copy"
-//   // label "Dump_FASTQ"
-
-//   input:
-//   val(srrAccession)
-
-//   output:
-//   val(missing_srrAccession), emit: missing_srrAccession
-
-//   script:
-//   """
-//   Rscript --vanilla bin/check_downloaded_reads.R $srrAcccession $params.rawReadsDir
-//   """
-// }

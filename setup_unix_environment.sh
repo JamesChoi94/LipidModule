@@ -177,6 +177,7 @@ then
   fi 
   if [ "${ENV_DIFF}" -ge 1 ]
   then
+    conda activate LipidModule
     conda env update --name LipidModule --file config/LipidModule.yml --prune
   else
     echo LipidModule virtual environment is up to date. Exiting script.

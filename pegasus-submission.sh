@@ -5,7 +5,7 @@
 #BSUB -e %J.err
 #BSUB -W 24:00
 #BSUB -q general
-#BSUB -n 1
+#BSUB -n 6
 #BSUB -B
 #BSUB -N
 #BSUB -u jsc228@miami.edu
@@ -17,6 +17,7 @@
 
 export NETHOME=/nethome/jsc228/LipidModule
 export SCRATCH=/scratch/projects/lemmon/jsc228/LipidModule
+export SAMPLESHEET=$NETHOME/data/samplesheet.csv
 
 ####################################################
 # Setup environment necessary for nextflow execution
@@ -29,7 +30,7 @@ unset _JAVA_OPTIONS
 module load R/4.1.0 # allows Rscript from command line
 module load python/3.8.7
 
-export PATH=$PATH:/${HOME}/miniconda3/envs/LipidModule/bbtools/lib
+# export PATH=$PATH:/${HOME}/miniconda3/envs/LipidModule/bbtools/lib
 
 # Make sure script files are executable 
 find . -type f \( -iname "*.sh" -o -iname "*.r" \) -exec chmod +x {} \;
@@ -71,6 +72,38 @@ fi
 
 mkdir -p ${SCRATCH}/work
 export NXF_WORK=${SCRATCH}/work
+
+####################################################
+# Convert GSM to SRR Accessions from samplesheet
+####################################################
+
+GSM_ACCESSIONS=($(awk -F, 'NR!=1 {print $1}' ${SAMPLESHEET}))
+for GSM in ${GSM_ACCESSIONS[@]}
+do
+  echo "esearchng ${GSM}..."
+  esearch -db sra -query ${GSM} | efetch -format runinfo >> \
+    $SCRATCH/data/esearch-runinfo.txt
+  sleep 2s
+done
+
+# Also create txt file of accessions only
+awk -F, 'NR%2==0 {print $1}' data/esearch-runinfo.txt > data/srrAccessions.txt
+
+####################################################
+# Download FASTQ files for SRR Accessions
+####################################################
+
+# mkdir -p $SCRATCH/data/rawdata
+# SRR_ACCESSIONS=($(awk -F, 'NR%2==0 {print $1}' results/esearch-runinfo.txt))
+# for SRR in ${SRR_ACCESSIONS[@]}
+# do 
+#   echo "fasterq-dump ${SRR}"
+#   prefetch -p -O $SCRATCH/data/rawdata "${SRR}"
+#   sleep 1s 
+#   fasterq-dump -p -O $SCRATCH/data/rawdata --threads 6 \
+# 	  --split-files "${SRR}"
+#   sleep 2s
+# done
 
 ####################################################
 # Run main
