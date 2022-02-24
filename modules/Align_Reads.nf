@@ -23,6 +23,31 @@ process Load_Genome {
   """
 }
 
+
+process Unload_Genome {
+
+  // Unload the genome, opposite of above.
+
+  tag "${alignerMethod}"
+
+  input:
+  val(alignerMethod)
+  path(index)
+  
+  output:
+  val(true), emit: load_genome
+
+  script:
+  if(alignerMethod == "STAR")
+  """
+  STAR \
+    --runMode alignReads \
+    --genomeDir ${index} \
+    --genomeLoad Remove
+  """
+}
+
+
 process Align_Reads {
 
   // Run read alignment against an indexed genome. `val(genome_loaded)` input 
@@ -31,12 +56,15 @@ process Align_Reads {
 
   tag "${alignerMethod}_${srrAccession}"
   publishDir path: { params.saveBAMs ? params.bamsDir: "work/dump" }, mode: "copy"
+  
+  beforeScript 'STAR --runMode alignReads --genomeDir ${index} --genomeLoad LoadAndExit'
+  afterScript 'STAR --runMode alignReads --genomeDir ${index} --genomeLoad Remove'
 
   input:
   tuple val(srrAccession), path(fastq_reads)
   val(alignerMethod)
   path(index)
-  val(genome_loaded)
+  // val(genome_loaded)
   
   output:
   tuple val(srrAccession), path("*"), emit: aligned_bams

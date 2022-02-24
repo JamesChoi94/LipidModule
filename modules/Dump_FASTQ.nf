@@ -1,14 +1,14 @@
 process Dump_FASTQ {
   
   tag "$srrAccession"
-  publishDir path: { params.saveRawFastq ? params.rawReadsDir : null }, mode: "copy"
+  publishDir "$params.rawReadsDir", mode: "copy", enabled: "$params.saveRawFastq"
   label "Dump_FASTQ"
 
   input:
   val(srrAccession)
 
   output:
-  tuple val(srrAccession), path("*.fastq"), emit: fastq_reads
+  tuple val(srrAccession), path("*.fastq"), emit: raw_reads
 
   script:
   """
@@ -20,8 +20,11 @@ process Dump_FASTQ {
 process Subset_Testing_FASTQ {
 
   tag "$srrAccession"
-  publishDir "$params.testReadsDir", mode: "copy"
+  publishDir "$params.testReadsDir", mode: "copy", enabled: "$params.testRun"
   
+  when:
+  params.testRun
+
   input:
   tuple val(srrAccession), path(fastq_reads)
 
