@@ -8,11 +8,11 @@ nextflow.enable.dsl=2
 // ##################################################################
 
 // include {Query_GEO; Compile_GEO_Queries; Extract_SRR} from "./modules/Query_GEO"
-include {Dump_FASTQ; Subset_Testing_FASTQ} from "./modules/Dump_FASTQ"
+include {Dump_FASTQ; Compress_FASTQ; Subset_Testing_FASTQ} from "./modules/Dump_FASTQ"
 include {Raw_FastQC; Trimmed_FastQC; Aligned_FastQC} from "./modules/FastQC"
 include {Trim_Adapters} from "./modules/Trim_Adapters"
-include {Build_Index} from "./modules/Build_Index"
-include {Align_Reads; Load_Genome; Unload_Genome} from "./modules/Align_Reads"
+include {Build_Index; Load_Index; Unload_Index} from "./modules/Build_Index"
+include {Align_Reads} from "./modules/Align_Reads"
 include {Convert_GTF2BED} from "./modules/Bedparse.nf"
 
 
@@ -79,15 +79,15 @@ workflow {
   // samplesheet = Compile_GEO_Queries.out.samplesheet_appended
 
   // Take single srrAccession if test run -------------------------
-  srrAccession = Compile_GEO_Queries.out.samplesheet_appended
-    .splitCsv(header:true)
-    .map{ r ->
-      srrAccession = r['SRR_Accession']
-      return srrAccession
-    }
-  if ( params.testRun ) {
-    srrAccession = srrAccession.take(1)
-  }
+  // srrAccession = Compile_GEO_Queries.out.samplesheet_appended
+  //   .splitCsv(header:true)
+  //   .map{ r ->
+  //     srrAccession = r['SRR_Accession']
+  //     return srrAccession
+  //   }
+  // if ( params.testRun ) {
+  //   srrAccession = srrAccession.take(1)
+  // }
   
 
   // fasterq-dump wrapper -----------------------------------------
@@ -132,9 +132,9 @@ workflow {
   annotation_bed = Convert_GTF2BED.out.annotation_bed
   
   // Align reads ----------------------------------------------------
-  Load_Genome(alignerMethod, index)
-  genome_loaded = Load_Genome.out.load_genome
-  Unload_Genome(alignerMethod, index)
+  Load_Index(alignerMethod, index)
+  genome_loaded = Load_Index.out.load_genome
+  Unload_Index(alignerMethod, index)
   Align_Reads(trimmed_reads, alignerMethod, index, genome_loaded)
   aligned_bams = Align_Reads.out.aligned_bams
   aligned_bams.take(1).view()

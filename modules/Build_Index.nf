@@ -23,17 +23,51 @@ process Build_Index {
   """
 }
 
-process Convert_GTF2BED {
-  publishDir "$params.genomeDir", mode: "copy"
+process Load_Index {
+
+  // Load the genome + index into memory before running read alignment. This 
+  // allows the genome in-memory to be shared across parallel processes 
+  // running the alignment and prevent it from being removed from memory.
+
+  tag "${alignerMethod}"
 
   input:
-  path(annotation_gtf)
-
+  val(alignerMethod)
+  path(index)
+  
   output:
-  path("*.bed"), emit: annotation_bed
+  val(true), emit: load_genome
 
   script:
+  if(alignerMethod == "STAR")
   """
-  bedparse gtf2bed $annotation_gtf > ${annotation_gtf}.bed
+  STAR \
+    --runMode alignReads \
+    --genomeDir ${index} \
+    --genomeLoad LoadAndExit
+  """
+}
+
+
+process Unload_Index {
+
+  // Unload the genome, opposite of above.
+
+  tag "${alignerMethod}"
+
+  input:
+  val(alignerMethod)
+  path(index)
+  
+  output:
+  val(true), emit: load_genome
+
+  script:
+  if(alignerMethod == "STAR")
+  """
+  STAR \
+    --runMode alignReads \
+    --genomeDir ${index} \
+    --genomeLoad Remove
   """
 }
