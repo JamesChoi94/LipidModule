@@ -74,22 +74,6 @@ mkdir -p ${SCRATCH}/work
 export NXF_WORK=${SCRATCH}/work
 
 ####################################################
-# Convert GSM to SRR Accessions from samplesheet
-####################################################
-
-GSM_ACCESSIONS=($(awk -F, 'NR!=1 {print $1}' ${SAMPLESHEET}))
-for GSM in ${GSM_ACCESSIONS[@]}
-do
-  echo "esearchng ${GSM}..."
-  esearch -db sra -query ${GSM} | efetch -format runinfo >> \
-    $SCRATCH/data/esearch-runinfo.txt
-  sleep 2s
-done
-
-# Also create txt file of accessions only
-awk -F, 'NR%2==0 {print $1}' data/esearch-runinfo.txt > data/srrAccessions.txt
-
-####################################################
 # Download FASTQ files for SRR Accessions
 ####################################################
 
@@ -109,7 +93,7 @@ awk -F, 'NR%2==0 {print $1}' data/esearch-runinfo.txt > data/srrAccessions.txt
 # Run main
 ####################################################
 
-# nextflow run main.nf \
-#   -profile lsf \
-#   -resume \
-#   -w ${SCRATCH}/work
+nextflow run main.nf \
+  -profile lsf \
+  -resume \
+  -w ${SCRATCH}/work

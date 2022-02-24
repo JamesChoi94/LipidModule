@@ -69,13 +69,14 @@ workflow {
     srrAccession = srrAccession.take(1)
   }
 
-  // Query GEO db for GSM to SRR mappings ------------------------
-  Query_GEO(samplesheet)
-  geo_queries = Query_GEO.out.geo_queries
-  Extract_SRR(geo_queries)
-  srrAccession = Extract_SRR.out.srrAcccession_all.splitText().view()
-  Compile_GEO_Queries(geo_queries, samplesheet)
-  samplesheet = Compile_GEO_Queries.out.samplesheet_appended
+  // // Query GEO db for GSM to SRR mappings ------------------------
+  // Query_GEO(samplesheet)
+  // geo_queries = Query_GEO.out.geo_queries
+  // Extract_SRR(geo_queries)
+  // srrAccession = Extract_SRR.out.srrAcccession_all.splitText().view()
+  // Compile_GEO_Queries(geo_queries, samplesheet)
+  // samplesheet = Compile_GEO_Queries.out.samplesheet_appended
+  
   // Take single srrAccession if test run -------------------------
   srrAccession = Compile_GEO_Queries.out.samplesheet_appended
     .splitCsv(header:true)
