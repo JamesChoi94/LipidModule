@@ -13,6 +13,7 @@ include {Raw_FastQC; Trimmed_FastQC; Aligned_FastQC} from "./modules/FastQC"
 include {Trim_Adapters} from "./modules/Trim_Adapters"
 include {Build_Index} from "./modules/Build_Index"
 include {Align_Reads; Load_Genome; Unload_Genome} from "./modules/Align_Reads"
+include {Convert_GTF2BED} from "./modules/Bedparse.nf"
 
 
 // ##################################################################
@@ -76,7 +77,7 @@ workflow {
   // srrAccession = Extract_SRR.out.srrAcccession_all.splitText().view()
   // Compile_GEO_Queries(geo_queries, samplesheet)
   // samplesheet = Compile_GEO_Queries.out.samplesheet_appended
-  
+
   // Take single srrAccession if test run -------------------------
   srrAccession = Compile_GEO_Queries.out.samplesheet_appended
     .splitCsv(header:true)
@@ -131,11 +132,10 @@ workflow {
   annotation_bed = Convert_GTF2BED.out.annotation_bed
   
   // Align reads ----------------------------------------------------
-  // Load_Genome(alignerMethod, index)
-  // genome_loaded = Load_Genome.out.load_genome
-  // Unload_Genome(alignerMethod, index)
-  Align_Reads(trimmed_reads, alignerMethod, index)
-  // Align_Reads(trimmed_reads, alignerMethod, index, genome_loaded)
+  Load_Genome(alignerMethod, index)
+  genome_loaded = Load_Genome.out.load_genome
+  Unload_Genome(alignerMethod, index)
+  Align_Reads(trimmed_reads, alignerMethod, index, genome_loaded)
   aligned_bams = Align_Reads.out.aligned_bams
   aligned_bams.take(1).view()
   

@@ -57,8 +57,8 @@ process Align_Reads {
   tag "${alignerMethod}_${srrAccession}"
   publishDir path: { params.saveBAMs ? params.bamsDir: "work/dump" }, mode: "copy"
   
-  beforeScript 'STAR --runMode alignReads --genomeDir ${index} --genomeLoad LoadAndExit'
-  afterScript 'STAR --runMode alignReads --genomeDir ${index} --genomeLoad Remove'
+  // beforeScript 'STAR --runMode alignReads --genomeDir ${index} --genomeLoad LoadAndExit'
+  // afterScript 'STAR --runMode alignReads --genomeDir ${index} --genomeLoad Remove'
 
   input:
   tuple val(srrAccession), path(fastq_reads)
