@@ -36,7 +36,7 @@ process Load_Index {
   path(index)
   
   output:
-  val(true), emit: load_genome
+  val(true), emit: genome_loaded
 
   script:
   if(alignerMethod == "STAR")
@@ -58,12 +58,13 @@ process Unload_Index {
   input:
   val(alignerMethod)
   path(index)
+  val(unload_genome)
   
   output:
   val(true), emit: load_genome
 
   script:
-  if(alignerMethod == "STAR")
+  if(alignerMethod == "STAR" & unload_genome)
   """
   STAR \
     --runMode alignReads \

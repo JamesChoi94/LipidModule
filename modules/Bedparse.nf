@@ -7,10 +7,10 @@ process Convert_GTF2BED {
   path(annotationGTF)
   
   output:
-  path(annotationBED), emit: annotation_bed
+  path("*.bed"), emit: annotation_bed
 
   script:
   """
-  bedparse gtf2bed ${annotationGTF} > ${params.annotationGTF}.bed
+  bedparse gtf2bed ${annotationGTF} >  ${annotationGTF}.bed
   """
 }

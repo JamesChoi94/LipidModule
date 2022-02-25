@@ -1,3 +1,6 @@
+# Dont track files used for debugging/testing
+*test
+
 # Dont track results
 results/**
 

@@ -5,22 +5,20 @@ process Align_Reads {
   // Align_Reads process to ensure that genome is available in memory.
 
   tag "${alignerMethod}_${srrAccession}"
-  publishDir path: { params.saveBAMs ? params.bamsDir: "work/dump" }, mode: "copy"
-  
-  // beforeScript 'STAR --runMode alignReads --genomeDir ${index} --genomeLoad LoadAndExit'
-  // afterScript 'STAR --runMode alignReads --genomeDir ${index} --genomeLoad Remove'
+  publishDir "$params.bamsDir", mode: "copy", enabled: "$params.saveBAMs"
 
   input:
   tuple val(srrAccession), path(fastq_reads)
   val(alignerMethod)
   path(index)
-  // val(genome_loaded)
+  val(genome_loaded)
   
   output:
   tuple val(srrAccession), path("*"), emit: aligned_bams
+  val(true), emit: unload_genome
 
   script:
-  if(alignerMethod == "STAR")
+  if ((alignerMethod == "STAR") & genome_loaded))
   """
   STAR \
     --genomeDir ${index} \

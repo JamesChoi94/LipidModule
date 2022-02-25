@@ -133,10 +133,11 @@ workflow {
   
   // Align reads ----------------------------------------------------
   Load_Index(alignerMethod, index)
-  genome_loaded = Load_Index.out.load_genome
-  Unload_Index(alignerMethod, index)
+  genome_loaded = Load_Index.out.genome_loaded
   Align_Reads(trimmed_reads, alignerMethod, index, genome_loaded)
   aligned_bams = Align_Reads.out.aligned_bams
+  unload_genome = Align_Reads.out.unload_genome
+  Unload_Index(alignerMethod, index, unload_genome)
   aligned_bams.take(1).view()
   
   // Alignment QC --------------------------------------------------
