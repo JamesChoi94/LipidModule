@@ -1,17 +1,16 @@
-process Trim_Adapters {
+process BBDuk {
 
   tag "$srrAccession"
   publishDir "$params.trimmedReadsDir",  mode: "copy", pattern: "*.bbduk.fastq", enabled: "$params.saveTrimmedFastq"
   publishDir "$params.BBdukDir", mode: "copy", pattern: "*_bbduk-stats.txt"
-
-  label "Trim_Adapters"
+  label "trim_reads"
 
   input:
   tuple val(srrAccession), path(fastq_reads)
 
   output:
   tuple val(srrAccession), path( "*.bbduk.fastq"), emit: trimmed_reads
-  path("*_bbduk-stats.txt"), emit: trimmed_reads_report
+  path("*_bbduk-stats.txt"), emit: bbduk_report
 
   script:
   """

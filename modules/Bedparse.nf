@@ -7,7 +7,7 @@ process Convert_GTF2BED {
   path(annotationGTF)
   
   output:
-  path("*.bed"), emit: annotation_bed
+  path("*.bed"), emit: annotationBED
 
   script:
   """

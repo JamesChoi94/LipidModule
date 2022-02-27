@@ -2,6 +2,7 @@ process Build_Index {
 
   tag "${params.alignerMethod}"
   publishDir "$params.genomeDir", mode: "copy"
+  label "large_mem"
 
   input:
   path(genome_fasta)

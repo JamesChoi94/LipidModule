@@ -8,12 +8,15 @@ nextflow.enable.dsl=2
 // ##################################################################
 
 // include {Query_GEO; Compile_GEO_Queries; Extract_SRR} from "./modules/Query_GEO"
-include {Dump_FASTQ; Compress_FASTQ; Subset_Testing_FASTQ} from "./modules/Dump_FASTQ"
+include {GZIP_Compress} from "./modules/utils.nf"
+include {Dump_FASTQ; Subset_Testing_FASTQ} from "./modules/Dump_FASTQ"
 include {Raw_FastQC; Trimmed_FastQC; Aligned_FastQC} from "./modules/FastQC"
-include {Trim_Adapters} from "./modules/Trim_Adapters"
+include {BBDuk} from "./modules/BBTools"
 include {Build_Index; Load_Index; Unload_Index} from "./modules/Build_Index"
-include {Align_Reads} from "./modules/Align_Reads"
+include {Align_Reads; Index_BAMs} from "./modules/Align_Reads"
 include {Convert_GTF2BED} from "./modules/Bedparse.nf"
+include {BAM_Stat; Read_Distribution; Infer_Experiment; Gene_Body_Coverage} from "./modules/RSeQC.nf"
+include {MultiQC} from "./modules/MultiQC.nf"
 
 
 // ##################################################################
@@ -22,32 +25,36 @@ include {Convert_GTF2BED} from "./modules/Bedparse.nf"
 
 def scriptbreak = "==========================================================================="
 
-Date date       = new Date()
-String dateNow  = date.format("yyyy-MM-dd -- ")
-String timeNow  = date.format("HH:mm:ss")
-def runDate     = dateNow + timeNow
+Date date1          = new Date()
+String dateStart    = date1.format("yyyy-MM-dd -- ")
+String timeStart    = date1.format("HH:mm:ss")
+def runStart        = dateStart + timeStart
 
 println ""
 println "$scriptbreak"
-println "Workflow:        rnaseq_preprocess"
-println "Author:          James Choi"
-println "Author contact:  jsc228 at miami dot edu"
-println "RunName:         $workflow.runName"
-println "RunProfile:      $workflow.profile"
-println "Start:           $runDate"
+println "Workflow:            rnaseq_preprocess"
+println "Author:              James Choi"
+println "Author contact:      jsc228 at miami dot edu"
+println "RunName:             $workflow.runName"
+println "RunProfile:          $workflow.profile"
+println "testRun:             $params.testRun"
+println "Start:               $runStart"
 println "$scriptbreak"
+println "Using the following params:"
 println ""
-println "Testing mode:     $params.testRun"
-// println "Using the following params:"
-// println ""
-// println "readsDir:              $params.readsDir"
-// println "queryGEODir:           $params.queryGEODir"
-// println "publishmode:           $params.publishmode"
-// println "sleep:                 $params.sleep"
-// println "resultsDir:            $params.resultsDir"
-// println "samplesheet:           $params.samplesheet"
-// println "dataDir:               $params.dataDir"
-// println ""
+println "saveRawFastq                   $params.saveRawFastq"
+println "saveTrimmedFastq:              $params.saveTrimmedFastq"
+println "saveBAMs:                      $params.saveBAMs"
+println "saveQuants:                    $params.saveQuants"
+println "compressFastq:                 $params.compressFastq"
+println "buildNewIndex:                 $params.buildNewIndex"
+println "alignerMethod:                 $params.alignerMethod"
+println "genomeDir:                     $params.genomeDir"
+println "existingIndex:                 $params.existingIndex"
+println "genomeFasta:                   $params.genomeFasta"
+println "annotationGTF:                 $params.annotationGTF"
+println "readsLength:                   $params.readsLength"
+println "$scriptbreak"
 
 
 // ##################################################################
@@ -70,77 +77,95 @@ workflow {
     srrAccession = srrAccession.take(1)
   }
 
-  // // Query GEO db for GSM to SRR mappings ------------------------
-  // Query_GEO(samplesheet)
-  // geo_queries = Query_GEO.out.geo_queries
-  // Extract_SRR(geo_queries)
-  // srrAccession = Extract_SRR.out.srrAcccession_all.splitText().view()
-  // Compile_GEO_Queries(geo_queries, samplesheet)
-  // samplesheet = Compile_GEO_Queries.out.samplesheet_appended
-
-  // Take single srrAccession if test run -------------------------
-  // srrAccession = Compile_GEO_Queries.out.samplesheet_appended
-  //   .splitCsv(header:true)
-  //   .map{ r ->
-  //     srrAccession = r['SRR_Accession']
-  //     return srrAccession
-  //   }
-  // if ( params.testRun ) {
-  //   srrAccession = srrAccession.take(1)
-  // }
-  
-
   // fasterq-dump wrapper -----------------------------------------
-  Dump_FASTQ(srrAccession)
-  raw_reads = Dump_FASTQ.out.raw_reads
+
+  if ( params.testRun ) {
+    raw_reads = Channel.fromFilePairs(params.testReadsDir + "/*_{1,2}.fastq")
+  } else {
+    Dump_FASTQ(srrAccession)
+    raw_reads = Dump_FASTQ.out.raw_reads
+  }
   
   // Take subset of reads if test run 
   Subset_Testing_FASTQ(raw_reads)
   raw_reads = Subset_Testing_FASTQ.out.test_reads
-  raw_reads.view()
+
 
   // FastQC on raw reads ------------------------------------------
+
   Raw_FastQC(raw_reads)
 
+
   // Trim adapter sequences using BBduk ---------------------------
-  Trim_Adapters(raw_reads)
-  trimmed_reads = Trim_Adapters.out.trimmed_reads
+
+  BBDuk(raw_reads)
+  trimmed_reads = BBDuk.out.trimmed_reads
+
 
   // FastQC on trimmed reads --------------------------------------
+
   Trimmed_FastQC(trimmed_reads)
+
 
   // Build genome index -------------------------------------------
 
-  // // If test run, use fasta/gtf subset. 
-  // // If new index not needed, use existing.
-  // if ( params.testBuildNewIndex ) {
-  //   Build_Index(testGenomeFasta, testAnnotationGTF, alignerMethod)
-  //   index = Build_Index.out.index
-  // } else if ( params.buildNewIndex ) {
-  //   Build_Index(genomeFasta, annotationGTF, alignerMethod)
-  //   index = Build_Index.out.index
-  // } else {
-  //   index = Channel.fromPath(params.existingIndex)
-  // }
   index = params.existingIndex
     ? Channel.fromPath(params.existingIndex) 
     : Build_Index(genomeFasta, annotationGTF, alignerMethod)
-  index.view()
   
   // Create BED format annotation for RSeQC
   Convert_GTF2BED(annotationGTF)
-  annotation_bed = Convert_GTF2BED.out.annotation_bed
+  annotationBED = Convert_GTF2BED.out.annotationBED
   
+
   // Align reads ----------------------------------------------------
+
   Load_Index(alignerMethod, index)
   genome_loaded = Load_Index.out.genome_loaded
   Align_Reads(trimmed_reads, alignerMethod, index, genome_loaded)
   aligned_bams = Align_Reads.out.aligned_bams
   unload_genome = Align_Reads.out.unload_genome
   Unload_Index(alignerMethod, index, unload_genome)
-  aligned_bams.take(1).view()
+  Index_BAMs(aligned_bams, alignerMethod)
   
-  // Alignment QC --------------------------------------------------
+
+  // Post-alignment QC ---------------------------------------------
+
   Aligned_FastQC(aligned_bams)
+  BAM_Stat(aligned_bams)
+  Read_Distribution(aligned_bams, annotationBED)
+  Infer_Experiment(aligned_bams, annotationBED)
+  // Gene_Body_Coverage(aligned_bams, annotationBED)
+
+
+  // MultiQC: collect reports --------------------------------------
+  
+  combined_reports = Raw_FastQC.out.raw_fastqc_report
+    .concat(
+      Trimmed_FastQC.out.trimmed_fastqc_report,
+      Aligned_FastQC.out.aligned_fastqc_report,
+      BBDuk.out.bbduk_report,
+      BAM_Stat.out.bam_stat_out,
+      Read_Distribution.out.read_distribution_out,
+      Infer_Experiment.out.infer_experiment_out
+    )
+    .collect()
+  MultiQC(combined_reports)
+
+  // Finish -------------------------------------------------------
+
+  workflow.onComplete {
+    Date date2          = new Date()
+    String dateEnd      = date2.format("yyyy-MM-dd -- ")
+    String timeEnd      = date2.format("HH:mm:ss")
+    def runEnd          = dateEnd + timeEnd
+
+    println ""
+    println "$scriptbreak"
+    println "Pipeline (rnaseq-preprocess) complete!"
+    println "End: $runEnd"
+    println "$scriptbreak"
+    println ""
+  }
 
 }
