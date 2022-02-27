@@ -80,15 +80,15 @@ workflow {
   // fasterq-dump wrapper -----------------------------------------
 
   if ( params.testRun ) {
-    raw_reads = Channel.fromFilePairs(params.testReadsDir + "/*_{1,2}.fastq")
+    raw_reads = Channel.fromFilePairs(params.testReadsDir + "/*_{1,2}.subset.fastq")
   } else {
     Dump_FASTQ(srrAccession)
     raw_reads = Dump_FASTQ.out.raw_reads
   }
   
-  // Take subset of reads if test run 
-  Subset_Testing_FASTQ(raw_reads)
-  raw_reads = Subset_Testing_FASTQ.out.test_reads
+  // // Take subset of reads if test run 
+  // Subset_Testing_FASTQ(raw_reads)
+  // raw_reads = Subset_Testing_FASTQ.out.test_reads
 
 
   // FastQC on raw reads ------------------------------------------
