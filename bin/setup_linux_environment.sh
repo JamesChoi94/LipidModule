@@ -63,20 +63,10 @@ echo Checking if conda is executable from PATH...
 if [ "" == "$(which conda)" ]
 then
   echo conda not found. Downloading Miniconda3 installation script...
-  sleep 1s # Slows down script to make terminal output more readable
-  if [[ "$(uname -m)" == "x86_64" || "$HOSTTYPE" == "X86_64" ]]
-  # If the Linux system is 64-bit...
-  then
-    # Download the script to install the 64-bit version of miniconda
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+  sleep 1s
+  wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
       -O ${HOME}/miniconda.sh
-  # If the Linux system is not 64-bit...
-  else
-    # Download the script to install the 32-bit version of miniconda
-    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86.sh \
-      -O ${HOME}/miniconda.sh
-  fi
-
+  
   echo Installing Miniconda3...; sleep 1s
   bash ${HOME}/miniconda.sh -b -p ${HOME}/miniconda3
 
@@ -108,32 +98,18 @@ then
   REINSTALL_ENV=0
   echo The LipidModule virtual environment already exists.; sleep 1s
   echo Checking if installed packages are current...; sleep 1s
-  if [ "$(uname -m)" == "x86_64" ]
-  then
-    conda list --explicit > ${NETHOME}/tmp_env.txt
-    ENV_DIFF=$(diff ${NETHOME}/tmp_env.txt \
-      ${NETHOME}/config/LipidModule.txt | wc -l)
-    rm ${NETHOME}/tmp_env.txt
-    if [ ${ENV_DIFF} -ge 1 ]
+  conda activate LipidModule
+  conda list --explicit > ${NETHOME}/tmp_env.yml
+  ENV_DIFF=$(diff ${NETHOME}/tmp_env.yml \
+    ${NETHOME}/config/LipidModule.yml | wc -l)
+  rm ${NETHOME}/tmp_env.yml
+  if [ ${ENV_DIFF} -ge 1 ]
     # True if environment specifications not identical
-    then
-      REINSTALL_ENV=1
-    else
-      echo LipidModule virtual environment is up to date. Exiting script.
-      exit 0
-    fi
-  else 
-    conda env export --name LipidModule > ${NETHOME}/tmp_env.yml
-    ENV_DIFF=$(diff ${NETHOME}/tmp_env.yml \
-      ${NETHOME}/config/LipidModule.yml | wc -l)
-    rm ${NETHOME}/tmp_env.yml
-    if [ ${ENV_DIFF} -ge 1 ]
-    then
-      REINSTALL_ENV=1
-    else
-      echo LipidModule virtual environment is up to date. Exiting script.
-      exit 0
-    fi
+  then
+    REINSTALL_ENV=1
+  else
+    echo LipidModule virtual environment is up to date. Exiting script.
+    exit 0
   fi
 # If environment does not exist...
 else
@@ -144,13 +120,10 @@ fi
 echo Creating the LipidModule virtual environment using conda...; sleep 1s
 if [ REINSTALL_ENV == 1 ]
 then
-  if [ "$(uname -m)" == "x86_64" ]
-  then
-	  conda create --name LipidModule \
-      --file ${NETHOME}/config/LipidModule.txt
-  else
-	  conda env create -f ${NETHOME}/config/LipidModule.yml
-  fi
+  conda create --name LipidModule \
+    --file ${NETHOME}/config/LipidModule.yml
+else
+  conda env create -f ${NETHOME}/config/LipidModule.yml 
 fi
 
 echo Removing unused packages and caches using conda...
