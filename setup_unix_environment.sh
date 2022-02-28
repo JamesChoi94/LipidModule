@@ -119,19 +119,9 @@ echo Checking if conda is executable from PATH...
 if [ "" == "$(which conda)" ]
 then
   echo conda not found. Downloading Miniconda3 installation script...
-  sleep 1s # Slows down script to make terminal output more readable
-  if [[ "$(uname -m)" == "x86_64" || "$HOSTTYPE" == "X86_64" ]]
-  # If the Linux system is 64-bit...
-  then
-    # Download the script to install the 64-bit version of miniconda
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
-      -O ${HOME}/miniconda.sh
-  # If the Linux system is not 64-bit...
-  else
-    # Download the script to install the 32-bit version of miniconda
-    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86.sh \
-      -O ${HOME}/miniconda.sh
-  fi
+  sleep 1s
+  wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+    -O ${HOME}/miniconda.sh
 
   echo Installing Miniconda3...; sleep 1s
   bash ${HOME}/miniconda.sh -b -p ${HOME}/miniconda3
@@ -167,18 +157,14 @@ then
   INSTALL_ENV=0
   echo The LipidModule virtual environment already exists.; sleep 1s
   echo Checking if installed packages are current...; sleep 1s
-  conda env export --name LipidModule > config/tmp_env.yml
-  ENV_DIFF=$(diff config/tmp_env.yml config/LipidModule.yml | wc -l)
-  rm config/tmp_env.yml
-  if [ "${ENV_DIFF}" -ge 1 ]
-  then 
-    echo "conda should update"
-    echo ${ENV_DIFF}
-  fi 
+  conda list --name LipidModule > config/tmp_env.txt
+  ENV_DIFF=$(diff config/tmp_env.txt config/LipidModule.txt | wc -l)
+  rm config/tmp_env.txt
   if [ "${ENV_DIFF}" -ge 1 ]
   then
+    echo "Conda diff length: ${ENV_DIFF}"
     conda activate LipidModule
-    conda env update --name LipidModule --file config/LipidModule.yml --prune
+    conda env update --name LipidModule --file config/LipidModule.txt --prune
   else
     echo LipidModule virtual environment is up to date. Exiting script.
     return 0
@@ -192,7 +178,7 @@ fi
 if [[ $INSTALL_ENV == 1 ]]
 then
   echo Creating the LipidModule virtual environment using conda...; sleep 1s
-  conda env create -f config/LipidModule.yml
+  conda env create -f config/LipidModule.txt
 fi
 
 # echo Removing unused packages and caches using conda...
