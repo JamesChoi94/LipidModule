@@ -27,11 +27,11 @@ process Subset_Testing_FASTQ {
   tuple val(srrAccession), path(fastq_reads)
 
   output:
-  tuple val(srrAccession), path("*.subset.fastq"), emit: test_reads
+  tuple val(srrAccession), path("*_subset_{1,2}.fastq"), emit: test_reads
 
   script:
   """
-  seqtk sample -s 100 ${fastq_reads[0]} 10000 > ${srrAccession}_1.subset.fastq
-  seqtk sample -s 100 ${fastq_reads[1]} 10000 > ${srrAccession}_2.subset.fastq
+  seqtk sample -s 100 ${fastq_reads[0]} 10000 > ${srrAccession}_subset_1.fastq
+  seqtk sample -s 100 ${fastq_reads[1]} 10000 > ${srrAccession}_subset_2.fastq
   """
 }

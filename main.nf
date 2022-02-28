@@ -95,8 +95,10 @@ workflow {
 
   // Trim adapter sequences using BBduk ---------------------------
 
-  BBDuk(raw_reads)
-  trimmed_reads = BBDuk.out.trimmed_reads
+  // BBDuk(raw_reads)
+  // trimmed_reads = BBDuk.out.trimmed_reads
+  Cutadapt(raw_reads)
+  trimmed_reads = Cutadapt.out.trimmed_reads
 
 
   // FastQC on trimmed reads --------------------------------------
@@ -120,7 +122,6 @@ workflow {
   Load_Index(alignerMethod, index)
   genome_loaded = Load_Index.out.genome_loaded
   Align_Reads(trimmed_reads, alignerMethod, index, genome_loaded)
-  Align_Reads(trimmed_reads, alignerMethod, index)
   aligned_bams = Align_Reads.out.aligned_bams
   unload_genome = Align_Reads.out.unload_genome
   Unload_Index(alignerMethod, index, unload_genome)
@@ -142,7 +143,7 @@ workflow {
     .concat(
       Trimmed_FastQC.out.trimmed_fastqc_report,
       Aligned_FastQC.out.aligned_fastqc_report,
-      BBDuk.out.bbduk_report,
+      Cutadapt.out.cutadapt_report,
       BAM_Stat.out.bam_stat_out,
       Read_Distribution.out.read_distribution_out,
       Infer_Experiment.out.infer_experiment_out
