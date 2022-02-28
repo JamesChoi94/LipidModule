@@ -157,7 +157,7 @@ then
   INSTALL_ENV=0
   echo The LipidModule virtual environment already exists.; sleep 1s
   echo Checking if installed packages are current...; sleep 1s
-  conda list --name LipidModule > config/tmp_env.txt
+  conda list --name LipidModule --explicit > config/tmp_env.txt
   ENV_DIFF=$(diff config/tmp_env.txt config/LipidModule.txt | wc -l)
   rm config/tmp_env.txt
   if [ "${ENV_DIFF}" -ge 1 ]
