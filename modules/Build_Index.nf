@@ -31,6 +31,7 @@ process Load_Index {
   // running the alignment and prevent it from being removed from memory.
 
   tag "${alignerMethod}"
+  label "large_mem"
 
   input:
   val(alignerMethod)
@@ -55,6 +56,7 @@ process Unload_Index {
   // Unload the genome, opposite of above.
 
   tag "${alignerMethod}"
+  label "large_mem"
 
   input:
   val(alignerMethod)

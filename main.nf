@@ -79,12 +79,9 @@ workflow {
 
   // fasterq-dump wrapper -----------------------------------------
 
-  if ( params.testRun ) {
-    raw_reads = Channel.fromFilePairs(params.testReadsDir + "/*_{1,2}.subset.fastq")
-  } else {
-    Dump_FASTQ(srrAccession)
-    raw_reads = Dump_FASTQ.out.raw_reads
-  }
+  raw_reads = params.testRun
+    ? Channel.fromFilePairs(params.testReadsDir + "/*_{1,2}.subset.fastq")
+    : Dump_FASTQ(srrAccession).out.raw_reads
   
   // // Take subset of reads if test run 
   // Subset_Testing_FASTQ(raw_reads)
@@ -123,6 +120,7 @@ workflow {
   Load_Index(alignerMethod, index)
   genome_loaded = Load_Index.out.genome_loaded
   Align_Reads(trimmed_reads, alignerMethod, index, genome_loaded)
+  Align_Reads(trimmed_reads, alignerMethod, index)
   aligned_bams = Align_Reads.out.aligned_bams
   unload_genome = Align_Reads.out.unload_genome
   Unload_Index(alignerMethod, index, unload_genome)
