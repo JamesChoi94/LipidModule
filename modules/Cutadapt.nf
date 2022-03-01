@@ -1,14 +1,14 @@
 process Cutadapt {
 
   tag "$srrAccession"
-  publishDir "$params.trimmedReadsDir", mode: "copy", pattern: "*.cutadapt.fastq", enabled: "$params.saveTrimmedFastq"
+  publishDir "$params.trimmedReadsDir", mode: "copy", pattern: "*.cutadapt.fastq.gz", enabled: "$params.saveTrimmedFastq"
   publishDir "$params.CutadaptDir", mode: "copy", pattern: "*.cutadapt-report.txt"
 
   input:
   tuple val(srrAccession), path(fastq_reads)
 
   output:
-  tuple val(srrAccession), path("*.cutadapt.fastq"), emit: trimmed_reads
+  tuple val(srrAccession), path("*.cutadapt.fastq.gz"), emit: trimmed_reads
   path("*.cutadapt-report.txt"), emit: cutadapt_report
 
   script:
@@ -19,10 +19,10 @@ process Cutadapt {
   cutadapt \
     -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA \
     -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
-    -o ${srrAccession}.cutadapt.fastq \
-    -p ${srrAccession}.cutadapt.fastq \
+    -o ${srrAccession}.cutadapt.fastq.gz \
+    -p ${srrAccession}.cutadapt.fastq.gz \
     --cores ${task.cpus} \
     ${fastq_reads[0]} ${fastq_reads[1]} \
-    2> ${srrAccession}.cutadapt-report.txt
+    1> ${srrAccession}.cutadapt-report.txt
   """
 }

@@ -81,10 +81,11 @@ process Align_Reads {
     --genomeDir ${index} \
     --runMode alignReads \
     --readFilesIn ${fastq_reads[0]} ${fastq_reads[1]} \
+    --readFilesCommand zcat \
     --runThreadN ${task.cpus} \
     --outFileNamePrefix ${srrAccession}_ \
     --outSAMtype BAM SortedByCoordinate \
-    --quantMode GeneCounts
+    --quantMode TranscriptomeSAM GeneCounts
   """
 }
 

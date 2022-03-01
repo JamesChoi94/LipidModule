@@ -1,34 +1,24 @@
-# Dont track files used for debugging/testing
+# Testing/debugging files, deprecated, and misc
 *test
-
-# Dont track results
-results/**
-
-# Deprecated material
 **/deprecated
+misc/
 
-# Dont track downloaded sra-tools tarballs
-bin/sratoolkit.*.tar.gz
-bin/sratoolkit**
+# Logs and results
+results/*/**
 
-# Dont track fasta/annotation files
-*.ht2
-*.ht21
-*.fa
-*.fasta
-*.fastq
-*.fa.gz
-*.fa
-*.gtf
-ref/HISAT2_index/**
-ref/STAR_index/**
-ref/annotations/**
-ref/**.tar
-ref/**.bed
-ref/**.bed.gz
+# Large data files
+data/raw_reads/**
+data/trimmed_reads/**
+data/bams/**
+data/test_reads/*.fastq
 
-# IDK
-ref/Log.out
+# Genome index files and fasta/annotation reference files
+ref/*index
+ref/*.gtf
+ref/*.bed
+ref/*.bed.gz
+ref/*.fa
+ref/*.fa.gz
 
 # Dont track nextflow run files
 *.nextflow.log*
@@ -36,38 +26,6 @@ ref/Log.out
 .nextflow/*
 work/*
 
-# Dont track large, compressed data files or fastq files
-data/*.gz
-data/*.tar
-data/*.zip
-data/*.tsv
-data/*.txt
-*.fastq
-*.sra
-*.bam
-*.sam
-
-# Dont track data files with subdirectories
-data/**/
-
-# Dont track FastQC outputs
-*fastqc.zip
-*fastqc.html
-
-# Allow tracking of samples_sheet
-!data/samples_sheet.csv
-
-# Dont track Zhu replication analysis
-misc/*
-Zhu*
-
-# 
-# !config/*.gz 
-# !config/*.tar 
-# !config/*.zip
-
-# .html files are usually Rmarkdown outputs. Dont track.
-*.html
-
 # Local machine temporary R session files.
 .Rproj.user
+.Rhistory

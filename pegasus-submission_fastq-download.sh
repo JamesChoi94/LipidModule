@@ -13,6 +13,7 @@
 export NETHOME=/nethome/jsc228/LipidModule
 export SCRATCH=/scratch/projects/lemmon/jsc228/LipidModule
 
+source "${HOME}/miniconda3/etc/profile.d/conda.sh"
 conda activate fastq-download
 
 find . -type f \( -iname "*.sh" -o -iname "*.r" \) -exec chmod +x {} \;

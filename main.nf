@@ -7,13 +7,11 @@ nextflow.enable.dsl=2
 // Import modules 
 // ##################################################################
 
-// include {Query_GEO; Compile_GEO_Queries; Extract_SRR} from "./modules/Query_GEO"
 include {GZIP_Compress} from "./modules/utils"
-include {Fasterq_Dump} from "./modules/SRAtools"
 include {Sample_FASTQ} from "./modules/Seqtk"
 include {Gtf2Bed} from "./modules/Bedparse"
 include {Raw_FastQC; Trimmed_FastQC; Aligned_FastQC} from "./modules/FastQC"
-// include {BBDuk} from "./modules/BBTools"
+include {Cutadapt} from "./modules/Cutadapt"
 include {Build_Index; Load_Index; Align_Reads; Unload_Index} from "./modules/STAR"
 include {Index_BAMs} from "./modules/Samtools"
 include {BAM_Stat; Read_Distribution; Infer_Experiment; Gene_Body_Coverage} from "./modules/RSeQC"
@@ -50,8 +48,8 @@ println "saveQuants:                    $params.saveQuants"
 println "compressFastq:                 $params.compressFastq"
 println "buildNewIndex:                 $params.buildNewIndex"
 println "alignerMethod:                 $params.alignerMethod"
-println "genomeDir:                     $params.genomeDir"
-println "existingIndex:                 $params.existingIndex"
+println "referenceDir:                  $params.referenceDir"
+println "genomeIndex:                   $params.genomeIndex"
 println "genomeFasta:                   $params.genomeFasta"
 println "annotationGTF:                 $params.annotationGTF"
 println "readsLength:                   $params.readsLength"
@@ -65,29 +63,21 @@ println "$scriptbreak"
 workflow {
 
   // Set input channels ----------------------------------------
-
-  samplesheet   = Channel.fromPath(params.samplesheet)
-  alignerMethod = Channel.value(params.alignerMethod)
-  genomeFasta   = Channel.fromPath(params.genomeFasta)
-  annotationGTF = Channel.fromPath(params.annotationGTF)
-  readsLength   = Channel.value(params.readsLength) // This will need to be modified if reads have different length
-  srrAccession  = Channel.fromPath(params.srrAccessions)
-    .splitText()
-    .map{it -> it.trim()}
-  if ( params.testRun ) {
-    srrAccession = srrAccession.take(1)
-  }
-
-  // fasterq-dump wrapper -----------------------------------------
-
-  raw_reads = params.testRun
-    ? Channel.fromFilePairs(params.testReadsDir + "/*_{1,2}.subset.fastq")
-    : Fasterq_Dump(srrAccession).out.raw_reads
   
-  // // Take subset of reads if test run 
-  // Sample_FASTQ(raw_reads)
-  // raw_reads = Sample_FASTQ.out.test_reads
-
+  raw_reads = params.testRun 
+    ? Channel.fromFilePairs(params.testReadsDir + "/*{1,2}.fastq.gz")
+    : Channel.fromFilePairs(params.rawReadsDir + "/*{1,2}.fastq.gz")
+  alignerMethod = Channel.value(params.alignerMethod)
+  genomeFasta = Channel.fromPath(params.genomeFasta)
+  annotationGTF = Channel.fromPath(params.annotationGTF)
+  readsLength = Channel.value(params.readsLength)
+  annotationBed = params.annotationBED
+    ? Channel.fromPath(params.annotationBED)
+    : Gtf2Bed(annotationGTF)
+  index = params.genomeIndex
+    ? Channel.fromPath(params.genomeIndex) 
+    : Build_Index(genomeFasta, annotationGTF, alignerMethod)
+  
 
   // FastQC on raw reads ------------------------------------------
 
@@ -96,8 +86,6 @@ workflow {
 
   // Trim adapter sequences using BBduk ---------------------------
 
-  // BBDuk(raw_reads)
-  // trimmed_reads = BBDuk.out.trimmed_reads
   Cutadapt(raw_reads)
   trimmed_reads = Cutadapt.out.trimmed_reads
 
@@ -105,17 +93,6 @@ workflow {
   // FastQC on trimmed reads --------------------------------------
 
   Trimmed_FastQC(trimmed_reads)
-
-
-  // Build genome index -------------------------------------------
-
-  index = params.existingIndex
-    ? Channel.fromPath(params.existingIndex) 
-    : Build_Index(genomeFasta, annotationGTF, alignerMethod)
-  
-  // Create BED format annotation for RSeQC
-  Gtf2Bed(annotationGTF)
-  annotationBED = Gtf2Bed.out.annotationBED
   
 
   // Align reads ----------------------------------------------------
