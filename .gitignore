@@ -7,9 +7,11 @@ misc/
 results/*/*
 
 # Large data files
-data/raw_reads/*
-data/trimmed_reads/*
-data/bams/*
+data/raw_reads/*.fastq
+data/raw_reads/*.fastq.gz
+data/trimmed_reads/*.fastq
+data/trimmed_reads/*.fastq.gz
+data/bams/*.bam
 data/test_reads/*.fastq
 
 # Genome index files and fasta/annotation reference files
