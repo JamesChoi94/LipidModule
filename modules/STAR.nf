@@ -1,3 +1,55 @@
+process Build_Index {
+
+  tag "${params.alignerMethod}"
+  publishDir "$params.genomeDir", mode: "copy"
+  label "large_mem"
+
+  input:
+  path(genome_fasta)
+  path(annotation_gtf)
+  val(alignerMethod)
+
+  output:
+  path(star_index), emit: index
+
+  script:
+  if(alignerMethod == "STAR")
+  """
+  mkdir -p star_index
+   STAR --runMode genomeGenerate \
+    --genomeDir star_index \
+    --genomeFastaFiles ${genome_fasta} \
+    --sjdbGTFfile  ${annotation_gtf} \
+    --runThreadN ${task.cpus}
+  """
+}
+
+process Load_Index {
+
+  // Load the genome + index into memory before running read alignment. This 
+  // allows the genome in-memory to be shared across parallel processes 
+  // running the alignment and prevent it from being removed from memory.
+
+  tag "${alignerMethod}"
+  label "large_mem"
+
+  input:
+  val(alignerMethod)
+  path(index)
+  
+  output:
+  val(true), emit: genome_loaded
+
+  script:
+  if(alignerMethod == "STAR")
+  """
+  STAR \
+    --runMode alignReads \
+    --genomeDir ${index} \
+    --genomeLoad LoadAndExit
+  """
+}
+
 process Align_Reads {
 
   // Run read alignment against an indexed genome. `val(genome_loaded)` input 
@@ -36,22 +88,27 @@ process Align_Reads {
   """
 }
 
+process Unload_Index {
 
-process Index_BAMs {
+  // Unload the genome, opposite of above.
 
-  tag "${alignerMethod}_${srrAccession}"
-  publishDir "$params.bamsDir", mode: "copy", enabled: "$params.saveBAMs", pattern: "*.bai"
+  tag "${alignerMethod}"
+  label "large_mem"
 
   input:
-  tuple val(srrAccession), path(aligned_bams)
   val(alignerMethod)
+  path(index)
+  val(unload_genome)
   
   output:
-  tuple val(srrAccession), path("*.bai"), emit: bam_index
+  val(true), emit: load_genome
 
   script:
-  if (alignerMethod == 'STAR')
+  if(alignerMethod == "STAR" & unload_genome)
   """
-  samtools index -b ${aligned_bams} ${aligned_bams}.bai
+  STAR \
+    --runMode alignReads \
+    --genomeDir ${index} \
+    --genomeLoad Remove
   """
 }

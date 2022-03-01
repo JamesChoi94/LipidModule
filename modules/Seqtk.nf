@@ -1,21 +1,4 @@
-process Dump_FASTQ {
-  
-  tag "$srrAccession"
-  publishDir "$params.rawReadsDir", mode: "copy", enabled: "$params.saveRawFastq"
-
-  input:
-  val(srrAccession)
-
-  output:
-  tuple val(srrAccession), path("*.fastq"), emit: raw_reads
-
-  script:
-  """
-  fasterq-dump --progress --threads $task.cpus --split-files ${srrAccession}
-  """
-}
-
-process Subset_Testing_FASTQ {
+process Sample_FASTQ {
 
   tag "$srrAccession"
   publishDir "$params.testReadsDir", mode: "copy", enabled: "$params.testRun"

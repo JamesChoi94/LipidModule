@@ -28,7 +28,7 @@ cd ${NETHOME}
 module load java/1.8.0_60 # java/1.8.0_60+ is sufficient
 unset _JAVA_OPTIONS
 module load R/4.1.0 # allows Rscript from command line
-module load python/3.8.7
+# module load python/3.8.7
 
 # export PATH=$PATH:/${HOME}/miniconda3/envs/LipidModule/bbtools/lib
 
@@ -90,10 +90,10 @@ export NXF_WORK=${SCRATCH}/work
 # done
 
 ####################################################
-# Run main
+# Run main nextflows
 ####################################################
 
-nextflow run main.nf \
-  -profile lsf \
-  -resume \
-  -w ${SCRATCH}/work
+# nextflow run main.nf \
+#   -profile lsf \
+#   -resume \
+#   -w ${SCRATCH}/work

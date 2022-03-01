@@ -8,15 +8,16 @@ nextflow.enable.dsl=2
 // ##################################################################
 
 // include {Query_GEO; Compile_GEO_Queries; Extract_SRR} from "./modules/Query_GEO"
-include {GZIP_Compress} from "./modules/utils.nf"
-include {Dump_FASTQ; Subset_Testing_FASTQ} from "./modules/Dump_FASTQ"
+include {GZIP_Compress} from "./modules/utils"
+include {Fasterq_Dump} from "./modules/SRAtools"
+include {Sample_FASTQ} from "./modules/Seqtk"
+include {Gtf2Bed} from "./modules/Bedparse"
 include {Raw_FastQC; Trimmed_FastQC; Aligned_FastQC} from "./modules/FastQC"
-include {BBDuk} from "./modules/BBTools"
-include {Build_Index; Load_Index; Unload_Index} from "./modules/Build_Index"
-include {Align_Reads; Index_BAMs} from "./modules/Align_Reads"
-include {Convert_GTF2BED} from "./modules/Bedparse.nf"
-include {BAM_Stat; Read_Distribution; Infer_Experiment; Gene_Body_Coverage} from "./modules/RSeQC.nf"
-include {MultiQC} from "./modules/MultiQC.nf"
+// include {BBDuk} from "./modules/BBTools"
+include {Build_Index; Load_Index; Align_Reads; Unload_Index} from "./modules/STAR"
+include {Index_BAMs} from "./modules/Samtools"
+include {BAM_Stat; Read_Distribution; Infer_Experiment; Gene_Body_Coverage} from "./modules/RSeQC"
+include {MultiQC} from "./modules/MultiQC"
 
 
 // ##################################################################
@@ -81,11 +82,11 @@ workflow {
 
   raw_reads = params.testRun
     ? Channel.fromFilePairs(params.testReadsDir + "/*_{1,2}.subset.fastq")
-    : Dump_FASTQ(srrAccession).out.raw_reads
+    : Fasterq_Dump(srrAccession).out.raw_reads
   
   // // Take subset of reads if test run 
-  // Subset_Testing_FASTQ(raw_reads)
-  // raw_reads = Subset_Testing_FASTQ.out.test_reads
+  // Sample_FASTQ(raw_reads)
+  // raw_reads = Sample_FASTQ.out.test_reads
 
 
   // FastQC on raw reads ------------------------------------------
@@ -113,8 +114,8 @@ workflow {
     : Build_Index(genomeFasta, annotationGTF, alignerMethod)
   
   // Create BED format annotation for RSeQC
-  Convert_GTF2BED(annotationGTF)
-  annotationBED = Convert_GTF2BED.out.annotationBED
+  Gtf2Bed(annotationGTF)
+  annotationBED = Gtf2Bed.out.annotationBED
   
 
   // Align reads ----------------------------------------------------

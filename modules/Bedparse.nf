@@ -1,4 +1,4 @@
-process Convert_GTF2BED {
+process Gtf2Bed {
 
   tag "$params.annotationGTF"
   publishDir "${params.genomeDir}", mode: "copy"
@@ -11,6 +11,6 @@ process Convert_GTF2BED {
 
   script:
   """
-  bedparse gtf2bed ${annotationGTF} >  ${annotationGTF}.bed
+  bedparse gtf2bed ${annotationGTF} > ${annotationGTF}.bed
   """
 }
