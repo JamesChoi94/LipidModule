@@ -69,6 +69,16 @@ else
   conda info -a
 fi
 
+####################################################
+# Clean unused conda env packages
+####################################################
+
+echo Removing unused packages and caches using conda...
+sleep 1s
+conda clean --all --yes
+conda config --add channels bioconda
+conda config --add channels conda-forge
+
 
 ####################################################
 # Create fastq-download conda env
@@ -134,17 +144,6 @@ then
   echo Creating the rnaseq-preprocessing env...; sleep 1s
   conda env create -f config/rnaseq-preprocessing.txt
 fi
-
-
-####################################################
-# Clean unused conda env packages
-####################################################
-
-echo Removing unused packages and caches using conda...
-sleep 1s
-conda clean --all --yes
-conda config --add channels bioconda
-conda config --add channels conda-forge
 
 
 ####################################################
