@@ -1,4 +1,5 @@
-﻿curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR789/SRR789190/SRR789190_1.fastq.gz -o SRR789190_GSM1103369_CTR_rep1_Mus_musculus_RNA-Seq_1.fastq.gz
+﻿#!/usr/bin/bash
+curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR789/SRR789190/SRR789190_1.fastq.gz -o SRR789190_GSM1103369_CTR_rep1_Mus_musculus_RNA-Seq_1.fastq.gz
 curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR789/SRR789190/SRR789190_2.fastq.gz -o SRR789190_GSM1103369_CTR_rep1_Mus_musculus_RNA-Seq_2.fastq.gz
 curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR789/SRR789194/SRR789194_1.fastq.gz -o SRR789194_GSM1103373_2D_rep2_Mus_musculus_RNA-Seq_1.fastq.gz
 curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR789/SRR789194/SRR789194_2.fastq.gz -o SRR789194_GSM1103373_2D_rep2_Mus_musculus_RNA-Seq_2.fastq.gz
