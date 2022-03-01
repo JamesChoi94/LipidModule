@@ -143,7 +143,9 @@ then
   echo Creating the rnaseq-preprocessing env...; sleep 1s
   conda create --name rnaseq-preprocessing --file config/rnaseq-preprocessing.txt
 fi
-
+conda activate rnaseq-preprocessing
+pip install cutadapt==3.7 # install separately because of depenedency BS
+conda deactivate
 
 ####################################################
 # Setup SRAtools config 

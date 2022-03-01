@@ -52,6 +52,7 @@ println "referenceDir:                  $params.referenceDir"
 println "genomeIndex:                   $params.genomeIndex"
 println "genomeFasta:                   $params.genomeFasta"
 println "annotationGTF:                 $params.annotationGTF"
+println "annotationBED:                 $params.annotationBED"
 println "readsLength:                   $params.readsLength"
 println "$scriptbreak"
 
@@ -71,7 +72,7 @@ workflow {
   genomeFasta = Channel.fromPath(params.genomeFasta)
   annotationGTF = Channel.fromPath(params.annotationGTF)
   readsLength = Channel.value(params.readsLength)
-  annotationBed = params.annotationBED
+  annotationBED = params.annotationBED
     ? Channel.fromPath(params.annotationBED)
     : Gtf2Bed(annotationGTF)
   index = params.genomeIndex
@@ -93,7 +94,7 @@ workflow {
   // FastQC on trimmed reads --------------------------------------
 
   Trimmed_FastQC(trimmed_reads)
-  
+
 
   // Align reads ----------------------------------------------------
 
