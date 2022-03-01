@@ -11,7 +11,6 @@
 # between `sratools` in `fastq-download` and other packages in 
 # `rnaseq-preprocessing`. This script should be run once (in theory).
 
-cd $HOME
 echo "Starting setup_unix_environment.sh in $(pwd)"
 
 
@@ -109,7 +108,7 @@ fi
 if [[ $INSTALL_ENV == 1 ]]
 then
   echo Creating the fastq-download env...; sleep 1s
-  conda env create -f config/fastq-download.txt
+  conda create --name fastq-download --file config/fastq-download.txt
 fi
 
 
@@ -142,7 +141,7 @@ fi
 if [[ $INSTALL_ENV == 1 ]]
 then
   echo Creating the rnaseq-preprocessing env...; sleep 1s
-  conda env create -f config/rnaseq-preprocessing.txt
+  conda create --name rnaseq-preprocessing --file config/rnaseq-preprocessing.txt
 fi
 
 
