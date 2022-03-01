@@ -4,12 +4,12 @@
 misc/
 
 # Logs and results
-results/*/**
+results/*/*
 
 # Large data files
-data/raw_reads/**
-data/trimmed_reads/**
-data/bams/**
+data/raw_reads/*
+data/trimmed_reads/*
+data/bams/*
 data/test_reads/*.fastq
 
 # Genome index files and fasta/annotation reference files
