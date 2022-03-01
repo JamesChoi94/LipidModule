@@ -1,5 +1,5 @@
 #!/bin/bash
-#BSUB -J fastq-download
+#BSUB -J LipidModule_fastq-download
 #BSUB -P lemmon
 #BSUB -o %J.out
 #BSUB -e %J.err

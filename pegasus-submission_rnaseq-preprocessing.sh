@@ -1,5 +1,5 @@
 #!/bin/bash
-#BSUB -J LipidModule-setup
+#BSUB -J LipidModule_rnaseq-preprocessing
 #BSUB -P lemmon
 #BSUB -o %J.out
 #BSUB -e %J.err
@@ -17,7 +17,7 @@
 
 export NETHOME=/nethome/jsc228/LipidModule
 export SCRATCH=/scratch/projects/lemmon/jsc228/LipidModule
-export SAMPLESHEET=$NETHOME/data/samplesheet.csv
+
 
 ####################################################
 # Setup environment necessary for nextflow execution
