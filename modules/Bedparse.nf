@@ -1,7 +1,7 @@
 process Gtf2Bed {
 
   tag "$params.annotationGTF"
-  publishDir "${params.genomeDir}", mode: "copy"
+  publishDir "${params.resultsDir}", mode: "copy"
 
   input:
   path(annotationGTF)
