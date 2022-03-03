@@ -66,7 +66,7 @@ workflow {
   // Set input channels ----------------------------------------
   
   raw_reads = params.testRun 
-    ? Channel.fromFilePairs(params.testReadsDir + "/*{1,2}.fastq.gz")
+    ? Channel.fromFilePairs(params.rawReadsDir + "/*{1,2}.fastq.gz").take(1)
     : Channel.fromFilePairs(params.rawReadsDir + "/*{1,2}.fastq.gz")
   alignerMethod = Channel.value(params.alignerMethod)
   genomeFasta = Channel.fromPath(params.genomeFasta)

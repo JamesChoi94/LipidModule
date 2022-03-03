@@ -52,4 +52,5 @@ export NXF_WORK=${SCRATCH}/work
 cd $SCRATCH
 nextflow run main.nf \
   -profile lsf \
+  -resume \
   -w ${SCRATCH}/work
