@@ -98,12 +98,13 @@ workflow {
 
   // Align reads ----------------------------------------------------
 
-  Load_Index(alignerMethod, index)
-  genome_loaded = Load_Index.out.genome_loaded
-  Align_Reads(trimmed_reads, alignerMethod, index, genome_loaded)
+  // Load_Index(alignerMethod, index)
+  // genome_loaded = Load_Index.out.genome_loaded
+  // Align_Reads(trimmed_reads, alignerMethod, index, genome_loaded)
+  Align_Reads(trimmed_reads, alignerMethod, index)
   aligned_bams = Align_Reads.out.aligned_bams
-  unload_genome = Align_Reads.out.unload_genome
-  Unload_Index(alignerMethod, index, unload_genome)
+  // unload_genome = Align_Reads.out.unload_genome
+  // Unload_Index(alignerMethod, index, unload_genome)
   Index_BAMs(aligned_bams, alignerMethod)
   
 
