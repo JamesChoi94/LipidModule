@@ -5,7 +5,7 @@ process Sort_BAMs_Coordinate {
   label "large_mem"
 
   input:
-  typle val(srrAccession), path(aligned_bams)
+  tuple val(srrAccession), path(aligned_bams)
   val(alignerMethod)
 
   output:
