@@ -19,6 +19,7 @@ process Cutadapt {
   cutadapt \
     -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA \
     -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
+    -m 5 \
     -o ${srrAccession}_1.cutadapt.fastq.gz \
     -p ${srrAccession}_2.cutadapt.fastq.gz \
     --cores ${task.cpus} \

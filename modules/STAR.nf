@@ -66,18 +66,15 @@ process Align_Reads {
   tuple val(srrAccession), path(fastq_reads)
   val(alignerMethod)
   path(index)
-  // val(genome_loaded)
   
   output:
-  tuple val(srrAccession), path("*sortedByCoord.out.bam"), emit: aligned_bams
-  tuple val(srrAccession), path("*.toTranscriptome.out.bam"), emit: transcriptome_bams
-  tuple val(srrAccession), path("*.out.sam"), emit: alinged_sams
+  tuple val(srrAccession), path("*Aligned.out.ba"), emit: aligned_bams
+  tuple val(srrAccession), path("*toTranscriptome.out.bam"), emit: transcriptome_bams
   tuple val(srrAccession), path("*.out"), emit: aligner_outs
   tuple val(srrAccession), path("*.tab"), emit: quants
   val(true), emit: unload_genome
 
   script:
-  // if ((alignerMethod == "STAR") & genome_loaded)
   if (alignerMethod == "STAR")
   """
   STAR \
@@ -87,7 +84,7 @@ process Align_Reads {
     --readFilesCommand zcat \
     --runThreadN ${task.cpus} \
     --outFileNamePrefix ${srrAccession}_ \
-    --outSAMtype BAM SortedByCoordinate \
+    --outSAMtype BAM Unsorted \
     --quantMode TranscriptomeSAM GeneCounts
   """
 }

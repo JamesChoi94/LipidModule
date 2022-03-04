@@ -52,11 +52,11 @@ Majority of this was run on University of Miami's Pegasus cluster. Has only been
     ```
     $ cd LipidModule
 
-    $ rcp bin/sra_explorer_fastq_download.sh \
+    $ scp bin/sra_explorer_fastq_download.sh \
     $ jsc228@pegasus.ccs.miami.edu:/nethome/jsc228/LipidModule/bin
     jsc228@pegasus.ccs.miami.edu's password:
 
-    $ rcp data/sra_explorer_metadata.tsv \
+    $ scp data/sra_explorer_metadata.tsv \
     $ jsc228@pegasus.ccs.miami.edu:/nethome/jsc228/LipidModule/data
     jsc228@pegasus.ccs.miami.edu's password:
     ```
