@@ -13,7 +13,7 @@ include {Gtf2Bed} from "./modules/Bedparse"
 include {Raw_FastQC; Trimmed_FastQC; Aligned_FastQC} from "./modules/FastQC"
 include {Cutadapt} from "./modules/Cutadapt"
 include {Build_Index; Load_Index; Align_Reads; Unload_Index} from "./modules/STAR"
-include {Index_BAMs} from "./modules/Samtools"
+include {Sort_BAMs_Coordinate; Index_BAMs} from "./modules/Samtools"
 include {BAM_Stat; Read_Distribution; Infer_Experiment; Gene_Body_Coverage} from "./modules/RSeQC"
 include {MultiQC} from "./modules/MultiQC"
 
@@ -76,8 +76,8 @@ workflow {
     ? Channel.fromPath(params.annotationBED)
     : Gtf2Bed(annotationGTF)
   index = params.genomeIndex
-    ? Channel.fromPath(params.genomeIndex) 
-    : Build_Index(genomeFasta, annotationGTF, alignerMethod)
+    ? Channel.fromPath(params.genomeIndex).collect()
+    : Build_Index(genomeFasta, annotationGTF, alignerMethod).out.index.collect()
   
 
   // FastQC on raw reads ------------------------------------------
@@ -105,7 +105,9 @@ workflow {
   aligned_bams = Align_Reads.out.aligned_bams
   // unload_genome = Align_Reads.out.unload_genome
   // Unload_Index(alignerMethod, index, unload_genome)
-  Index_BAMs(aligned_bams, alignerMethod)
+  Sort_BAMs_Coordinate(aligned_bams, alignerMethod)
+  sorted_aligned_bams = Sort_BAMs_Coordinate.out.sorted_aligned_bams
+  Index_BAMs(sorted_aligned_bams, alignerMethod)
   
 
   // Post-alignment QC ---------------------------------------------

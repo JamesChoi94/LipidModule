@@ -68,7 +68,7 @@ process Align_Reads {
   path(index)
   
   output:
-  tuple val(srrAccession), path("*Aligned.out.ba"), emit: aligned_bams
+  tuple val(srrAccession), path("*Aligned.out.bam"), emit: aligned_bams
   tuple val(srrAccession), path("*toTranscriptome.out.bam"), emit: transcriptome_bams
   tuple val(srrAccession), path("*.out"), emit: aligner_outs
   tuple val(srrAccession), path("*.tab"), emit: quants
